@@ -53,6 +53,7 @@ public class RoomList extends VBox implements Initializable {
             RoomListItem item = new RoomListItem(entry.get("id"), entry.get("name"), entry.get("status"));
             this.roomList.add(item);
         }
+        table.setItems(this.roomList);
     }
 
     private void onActionCall (String id) {
