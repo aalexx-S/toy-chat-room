@@ -62,6 +62,11 @@ public class MyFileChooser extends HBox implements Initializable {
         this.filePath.setText(filePath);
     }
 
+    public void clear () {
+        this.chosenFile.set(null);
+        setFilePath("");
+    }
+
     public void setFilter (List<String> description, List<List<String> > extentions) {
         filterDescription = description;
         filterExtension = extentions;

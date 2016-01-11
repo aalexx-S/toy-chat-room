@@ -1,0 +1,13 @@
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+<fx:root type="javafx.scene.layout.VBox"
+         xmlns:fx="http://javafx.com/fxml">
+    <TableView fx:id="table">
+        <columns>
+            <TableColumn fx:id="name" text="Name" editable="false" sortable="false" />
+            <TableColumn fx:id="status" text="Status" editable="false" sortable="false" />
+            <TableColumn fx:id="action" text="Action" editable="false" sortable="false" />
+        </columns>
+    </TableView>
+</fx:root>

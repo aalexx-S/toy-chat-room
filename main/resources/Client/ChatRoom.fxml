@@ -1,0 +1,46 @@
+<?import CustomNode.MyConfirmationButton?>
+<?import CustomNode.MyFileChooser?>
+<?import CustomNode.MyPopupInputButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TableColumn?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Client.ChatRoomController"
+      spacing="10" >
+    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+    <HBox fx:id="header" spacing="20" alignment="CENTER">
+        <MyPopupInputButton fx:id="add"
+                            text="AddPeople"
+                            title="Add People"
+                            headerText="Add an user"
+                            contentText="Please enter id" />
+        <MyConfirmationButton fx:id="leave"
+                              text="Leave"
+                              title="Confirmation"
+                              headerText="Leaving chat room."
+                              contentText="Confirm to leave." />
+    </HBox>
+    <TableView fx:id="contentTable">
+        <columns>
+            <TableColumn fx:id="time" text="Time" editable="false" sortable="false" />
+            <TableColumn fx:id="name" text="Name" editable="false" sortable="false" />
+            <TableColumn fx:id="content" text="Content" editable="false" sortable="false" />
+        </columns>
+    </TableView>
+    <VBox spacing="10">
+        <TextField fx:id="inputTextField" promptText="Enter messages..."/>
+        <HBox spacing="20" alignment="CENTER">
+            <MyFileChooser text="Upload File"
+                           fx:id="fileChooser"/>
+            <MyConfirmationButton text="confirm"
+                                  defaultButton="true"
+                                  title="Confirmation"
+                                  headerText="Send message (and file)"
+                                  contentText="Confirm to send."
+                                  fx:id="confirm"/>
+        </HBox>
+    </VBox>
+</VBox>
