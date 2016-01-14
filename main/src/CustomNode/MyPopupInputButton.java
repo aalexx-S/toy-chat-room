@@ -1,11 +1,13 @@
 package CustomNode;
 
 import javafx.beans.NamedArg;
+import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
@@ -28,6 +30,7 @@ public class MyPopupInputButton extends HBox implements Initializable {
     private String contentText ;//= "Default content.";
     private boolean defaultButton = false;
     private Callback<String, Void> confirmAction = param -> null;
+    private ChangeListener textFieldChangeListener = (observable, oldValue, newValue) -> {};
 
     public MyPopupInputButton(@NamedArg("text") String text,
                               @NamedArg("defaultString") String defaultString,
@@ -68,6 +71,10 @@ public class MyPopupInputButton extends HBox implements Initializable {
         this.contentText = contentText;
     }
 
+    public void setTextFieldChangeListener (ChangeListener listener) {
+        textFieldChangeListener = listener;
+    }
+
     public void setOnConfirm (Callback<String, Void> confirmAction) {
         this.confirmAction = confirmAction;
     }
@@ -78,6 +85,7 @@ public class MyPopupInputButton extends HBox implements Initializable {
         confirmationAlert.setTitle(title);
         confirmationAlert.setHeaderText(headerText);
         confirmationAlert.setContentText(contentText);
+        confirmationAlert.getEditor().textProperty().addListener(textFieldChangeListener);
         Optional<String> result = confirmationAlert.showAndWait();
         result.ifPresent(entered -> confirmAction.call(entered));
     }
