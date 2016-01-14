@@ -25,11 +25,11 @@ import java.util.ResourceBundle;
  * Created by aalexx on 1/10/16.
  *
  * setMessage(List<Map<String, String>>);
- *  "name", [name]
+ *  "sender_name", [name]
  *  "type", ["file", other]
  *  "content", [content]   // this will be shown before the download button if type is "file"
  *  "time", [time]         // in second
- *  "id", [file id]        // can be empty if type is not file
+ *  "file_id", [file id]        // can be empty if type is not file
  *
  *  add people callback:
  *      pass the person's id
@@ -41,7 +41,7 @@ import java.util.ResourceBundle;
  *      pass file id
  *
  *  sendConfirm:
- *      trigger action handler
+ *      trigger action handler;
  */
 public class ChatRoomController implements Initializable {
     @FXML private MyConfirmationButton confirm;
@@ -85,8 +85,8 @@ public class ChatRoomController implements Initializable {
     public void setMessages (List<Map<String, String>> messages) {
         this.messages = FXCollections.observableArrayList();
         for (Map<String, String> entry : messages) {
-            ChatRoomMessage item = new ChatRoomMessage(entry.get("name"), entry.get("type"), entry.get("content"),
-                    entry.get("time"), entry.get("id"));
+            ChatRoomMessage item = new ChatRoomMessage(entry.get("sender_name"), entry.get("type"), entry.get("content"),
+                    entry.get("time"), entry.get("file_id"));
             this.messages.add(item);
         }
         contentTable.setItems(this.messages);
