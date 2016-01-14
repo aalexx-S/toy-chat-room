@@ -1,17 +1,27 @@
 package Client;
 
 import CustomNode.MyPopupInputButton;
+import com.sun.deploy.panel.TextFieldProperty;
+import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.util.Callback;
 import jdk.nashorn.internal.codegen.CompilerConstants;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 /**
  * Created by aalexx on 1/10/16.
  */
-public class MainPageController {
+public class MainPageController implements Initializable {
     @FXML private RoomList singleTable;
     @FXML private RoomList multipleTable;
     @FXML private MyPopupInputButton find;
@@ -39,5 +49,20 @@ public class MainPageController {
 
     public void setBuildAction (Callback<String, Void> callback) {
         build.setOnConfirm(callback);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Pattern FIND_FILTER = Pattern.compile("^[^\\.]*$");
+        find.setTextFieldChangeListener((observable, oldValue, newValue) -> {
+            if (!FIND_FILTER.matcher((String)newValue).matches()) {
+                ((Property)observable).setValue(oldValue);
+            }
+        });
+        build.setTextFieldChangeListener((observable, oldValue, newValue) -> {
+            if (!FIND_FILTER.matcher((String)newValue).matches()) {
+                ((Property)observable).setValue(oldValue);
+            }
+        });
     }
 }

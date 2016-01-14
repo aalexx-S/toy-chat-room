@@ -13,7 +13,6 @@
         <Label text="Single : Find an user :" />
         <MyPopupInputButton fx:id="find"
                             text="Find"
-                            defaultString="pusheen"
                             title="Find Person"
                             headerText="Find your friends!"
                             contentText="Please enter id" />
@@ -24,7 +23,6 @@
         <Label text="Multiple : Build a chat room :" />
         <MyPopupInputButton fx:id="build"
                             text="Build"
-                            defaultString="pusheen"
                             title="Build a chat room"
                             headerText="Build your own room!"
                             contentText="Please enter name" />
