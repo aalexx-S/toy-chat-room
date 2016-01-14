@@ -92,6 +92,13 @@ public class ChatRoomController implements Initializable {
         contentTable.setItems(this.messages);
     }
 
+    public void addMessages (Map<String, String> entry) {
+        ChatRoomMessage item = new ChatRoomMessage(entry.get("sender_name"), entry.get("type"), entry.get("content"),
+                entry.get("time"), entry.get("file_id"));
+        this.messages.add(item);
+        contentTable.setItems(this.messages);
+    }
+
     public void onActionCall (String downloadId) {
         downloadCallback.call(downloadId);
     }
