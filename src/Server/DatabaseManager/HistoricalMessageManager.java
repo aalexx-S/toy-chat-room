@@ -60,7 +60,7 @@ public class HistoricalMessageManager extends DatabaseManager {
         }
     }
 
-    public List<Map<String, String>> query(int room_id) {
+    public List<Map<String, String>> query(String room_id) {
         Connection c = null;
         Statement stmt = null;
         List<Map<String, String>> response = new ArrayList<Map<String, String>>();
@@ -71,13 +71,13 @@ public class HistoricalMessageManager extends DatabaseManager {
                 c.setAutoCommit(false);
 
                 stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM Message WHERE RoomID = " + Integer.toString(room_id) + ";");
+                ResultSet rs = stmt.executeQuery("SELECT * FROM Message WHERE RoomID = " + room_id + ";");
                 while (rs.next()) {
                     Map<String, String> entry = new HashMap<String, String>();
 
                     String sender = rs.getString("Sender");
                     String content = rs.getString("Content");
-                    entry.put("room_id", Integer.toString(room_id));
+                    entry.put("room_id", room_id);
                     entry.put("sender_name", sender);
                     entry.put("content", content);
                     response.add(entry);

@@ -18,10 +18,10 @@ dependencies {
 sourceSets {
 	main {
 		java {
-			srcDir 'main/src'
+			srcDir 'src'
 		}
 		resources {
-			srcDir 'main/resources'
+			srcDir 'resources'
 		}
 		output.resourcesDir = 'build/classes/main'
 	}

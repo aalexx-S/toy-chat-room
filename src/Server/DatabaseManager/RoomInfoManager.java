@@ -25,7 +25,7 @@ public class RoomInfoManager extends DatabaseManager {
         }
     }
 
-    public int add(String type, List<String> users) {
+    public int add(List<String> users) {
         Connection c = null;
         PreparedStatement stmt = null;
 
@@ -128,7 +128,15 @@ public class RoomInfoManager extends DatabaseManager {
         }
     }
 
-    public List<String> query(int room_id) {
+    public boolean check(String room_id, String user) {
+        List<String> users = query(room_id);
+        if (users.contains(user))
+            return false;
+        else
+            return true;
+    }
+
+    public List<String> query(String room_id) {
         Connection c = null;
         Statement stmt = null;
         List<String> response = new ArrayList<String>();
@@ -139,7 +147,7 @@ public class RoomInfoManager extends DatabaseManager {
                 c.setAutoCommit(false);
 
                 stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery( "SELECT Users FROM RoomInfo WHERE RoomID = " + Integer.toString(room_id) + ";" );
+                ResultSet rs = stmt.executeQuery( "SELECT Users FROM RoomInfo WHERE RoomID = " + room_id + ";" );
                 while (rs.next()) {
                     String dirty_users = rs.getString("Users");
                     String[] users = dirty_users.split(".");
