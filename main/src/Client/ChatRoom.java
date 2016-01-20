@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class ChatRoom {
     private Stage stage;
     private ChatRoomController controller;
     private String id;
+    private EventHandler<ActionEvent> handler = event -> {};
 
     public ChatRoom (String name, String type) {
         this.type = type;
@@ -57,10 +59,26 @@ public class ChatRoom {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        /* on close event */
+        stage.setOnCloseRequest(event -> {
+            handler.handle(new ActionEvent());
+        });
     }
 
     public String getRoomId () {
         return this.id;
+    }
+
+    public File getChosenFile () {
+        return controller.getChosenFile();
+    }
+
+    public String getInputText () {
+        return controller.getInputText();
+    }
+
+    public void setOnCloseHandler (EventHandler<ActionEvent> handler) {
+        this.handler = handler;
     }
 
     public void setAddPeopleCallBack (Callback<String, Void> callBack) {
@@ -81,6 +99,10 @@ public class ChatRoom {
 
     public void setMessages (List<Map<String, String>> messages) {
         controller.setMessages(messages);
+    }
+
+    public void addMessages (Map<String, String> message) {
+        controller.addMessages(message);
     }
 
     public void show() {

@@ -1,17 +1,24 @@
 package Client;
 
+import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
 /**
  * Created by aalexx on 1/2/16.
  */
-public class LoginPageController {
+public class LoginPageController implements Initializable {
     @FXML private TextField account;
     @FXML private PasswordField password;
     @FXML private TextField ip;
@@ -62,5 +69,31 @@ public class LoginPageController {
 
     public void setRegisterOnAction (EventHandler<ActionEvent> handler) {
         register.setOnAction(handler);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Pattern DOT = Pattern.compile("^[^\\.]*$");
+        Pattern IP = Pattern.compile("^[1-9\\.]*$");
+        Pattern PORT = Pattern.compile("^[1-9]*$");
+        ChangeListener dotListener = (observable, oldValue, newValue) -> {
+            if (!DOT.matcher((String)newValue).matches()) {
+                ((Property)observable).setValue(oldValue);
+            }
+        };
+        ChangeListener ipListener = (observable, oldValue, newValue) -> {
+            if (!IP.matcher((String)newValue).matches()) {
+                ((Property)observable).setValue(oldValue);
+            }
+        };
+        ChangeListener portListener = (observable, oldValue, newValue) -> {
+            if (!PORT.matcher((String)newValue).matches()) {
+                ((Property)observable).setValue(oldValue);
+            }
+        };
+        account.textProperty().addListener(dotListener);
+        password.textProperty().addListener(dotListener);
+        ip.textProperty().addListener(ipListener);
+        port.textProperty().addListener(portListener);
     }
 }

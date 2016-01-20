@@ -67,36 +67,13 @@ public class Client extends Application {
         ma1.put("status", "online");
         Map<String, String> ma2 = new HashMap<>();
         ma2.put("id", "00002");
-        ma2.put("name", "mullll");
+        ma2.put("name", "lululu");
         ma2.put("status", "stuffffffff");
         List<Map<String, String>> stuff = new ArrayList<>();
         stuff.add(ma1);
         stuff.add(ma2);
         controller.setSingleTableList(stuff);
         controller.setMultipleTableList(stuff);
-        controller.setSingleOnEnterAction(param -> {
-            ChatRoom r = new ChatRoom(param, "single");
-            List<Map<String, String>> ssss = new ArrayList<>();
-            Map<String, String> mb1 = new HashMap<>();
-            mb1.put("name", "apple");
-            mb1.put("type", "file");
-            mb1.put("content", "100 kb");
-            mb1.put("time", "10000020");
-            mb1.put("id", "sdfsfsdf");
-            ssss.add(mb1);
-            r.setMessages(ssss);
-            r.setOnDownload(param1 -> {
-                System.out.println("Oh my god it works! " + param1);
-                return null;
-            });
-            r.show();
-            return null;
-        });
-        controller.setMultipleOnEnterAction(param -> {
-            ChatRoom r = new ChatRoom(param, "multiple");
-            r.show();
-            return null;
-        });
 
         Scene scene = stage.getScene();
         if (scene == null) {

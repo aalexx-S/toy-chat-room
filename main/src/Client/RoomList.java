@@ -15,6 +15,7 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -32,7 +33,7 @@ public class RoomList extends VBox implements Initializable {
     @FXML private TableColumn name;
     @FXML private TableColumn status;
     @FXML private TableColumn action;
-    private Callback<String, Void> callback = param -> null;
+    private Callback<Map<String, String>, Void> callback = param -> null;
 
     private ObservableList<RoomListItem> roomList = FXCollections.observableArrayList();
 
@@ -56,11 +57,14 @@ public class RoomList extends VBox implements Initializable {
         table.setItems(this.roomList);
     }
 
-    private void onActionCall (String id) {
-        callback.call(id);
+    private void onActionCall (String id, String name) {
+        Map<String, String> param = new HashMap<>();
+        param.put("name", name);
+        param.put("id", id);
+        callback.call(param);
     }
 
-    public void setOnEnter (Callback<String, Void> callback) {
+    public void setOnEnter (Callback<Map<String, String>, Void> callback) {
         this.callback = callback;
     }
 
@@ -82,7 +86,7 @@ public class RoomList extends VBox implements Initializable {
             action.setOnAction(event -> {
                 int selected = getTableRow().getIndex();
                 RoomListItem item = (RoomListItem) table.getItems().get(selected);
-                onActionCall(item.getId());
+                onActionCall(item.getId(), item.getName());
             });
         }
 
