@@ -77,9 +77,9 @@ public class RoomListManager extends DatabaseManager {
                     for (int i = 0; i < ids.length; i++) {
                         Map<String, String> entry = new HashMap<String, String>();
 
-                        entry.put("type", types[i]);
-                        entry.put("id", ids[i]);
-                        entry.put("name", names[i]);
+                        entry.put("room_type", types[i]);
+                        entry.put("room_id", ids[i]);
+                        entry.put("room_name", names[i]);
                         response.add(entry);
                     }
                 }
@@ -157,9 +157,9 @@ public class RoomListManager extends DatabaseManager {
 
                 stmt = c.prepareStatement("UPDATE RoomList SET RoomIDs = ?, RoomTypes = ?, RoomNames = ? WHERE Account = ?;");
 
-                stmt.setString(1, entry.get("room_id"));
-                stmt.setString(2, entry.get("room_type"));
-                stmt.setString(3, entry.get("room_name"));
+                stmt.setString(1, dirty_ids);
+                stmt.setString(2, dirty_types);
+                stmt.setString(3, dirty_names);
                 stmt.setString(4, entry.get("account"));
                 stmt.executeUpdate();
                 stmt.close();

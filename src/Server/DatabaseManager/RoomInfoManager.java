@@ -15,6 +15,7 @@ public class RoomInfoManager extends DatabaseManager {
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS RoomInfo " +
                 "(RoomID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                " RoomName STRING," +
                 " Users   STRING  NOT NULL)";
             stmt.executeUpdate(sql);
             stmt.close();
@@ -25,7 +26,7 @@ public class RoomInfoManager extends DatabaseManager {
         }
     }
 
-    public int add(List<String> users) {
+    public int add(List<String> users, String room_name) {
         Connection c = null;
         PreparedStatement stmt = null;
 
@@ -43,9 +44,10 @@ public class RoomInfoManager extends DatabaseManager {
                 }
 
                 stmt = c.prepareStatement("INSERT INTO RoomInfo " +
-                                "(Users)" +
-                                "VALUES (?);", Statement.RETURN_GENERATED_KEYS);
+                                "(Users, RoomName)" +
+                                "VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, dirty_users);
+                stmt.setString(2, room_name);
                 stmt.executeUpdate();
 
                 ResultSet rs = stmt.getGeneratedKeys();
@@ -154,6 +156,36 @@ public class RoomInfoManager extends DatabaseManager {
                     for (String user : users) {
                         response.add(user);
                     }
+                }
+                rs.close();
+                stmt.close();
+                c.close();
+                break;
+            }
+            catch (Exception e) {
+                if (checkLock(e.getMessage(), c))
+                    continue;
+                else
+                    break;
+            }
+        }
+        return response;
+    }
+
+    public String queryName(String room_id) {
+        Connection c = null;
+        Statement stmt = null;
+        String response = "";
+        while (true) {
+            try {
+                Class.forName("org.sqlite.JDBC");
+                c = DriverManager.getConnection("jdbc:sqlite:roominfo.db");
+                c.setAutoCommit(false);
+
+                stmt = c.createStatement();
+                ResultSet rs = stmt.executeQuery( "SELECT RoomName FROM RoomInfo WHERE RoomID = " + room_id + ";" );
+                if (rs.next()) {
+                    response = rs.getString("RoomName");
                 }
                 rs.close();
                 stmt.close();

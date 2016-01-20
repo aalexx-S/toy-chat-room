@@ -16,7 +16,7 @@ public class FileManager extends DatabaseManager {
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS File " +
                 "(Token INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " Content  STRING," +
+                " FileName  STRING," +
                 " Timestamp INT)";
             stmt.executeUpdate(sql);
             stmt.close();
@@ -38,7 +38,7 @@ public class FileManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:file.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("INSERT INTO File (Content,Timestamp)" +
+                stmt = c.prepareStatement("INSERT INTO File (FileName,Timestamp)" +
                         " VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, entry.get("content"));
                 stmt.setString(2, entry.get("time_stamp"));
@@ -80,7 +80,7 @@ public class FileManager extends DatabaseManager {
                 stmt = c.createStatement();
                 ResultSet rs = stmt.executeQuery( "SELECT Content FROM File WHERE Token = " + token + ";");
                 if (rs.next()) {
-                    response = rs.getString("Content");
+                    response = rs.getString("FileName");
                 }
                 rs.close();
                 stmt.close();

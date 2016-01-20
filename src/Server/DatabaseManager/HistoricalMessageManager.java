@@ -19,6 +19,8 @@ public class HistoricalMessageManager extends DatabaseManager {
                 " RoomID    INT NOT NULL," +
                 " Sender  STRING  NOT NULL," +
                 " Content  STRING," +
+                " Type  STRING," +
+                " FileID    STRING," +
                 " Timestamp INT NOT NULL)";
             stmt.executeUpdate(sql);
             stmt.close();
@@ -38,12 +40,14 @@ public class HistoricalMessageManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:message.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("INSERT INTO Message (RoomID,Sender,Content,Timestamp)" +
-                        "VALUES (?, ?, ?, ?);");
+                stmt = c.prepareStatement("INSERT INTO Message (RoomID,Sender,Content,Timestamp,Type,FileID)" +
+                        "VALUES (?, ?, ?, ?, ?, ?);");
                 stmt.setString(1, entry.get("room_id"));
                 stmt.setString(2, entry.get("sender_name"));
                 stmt.setString(3, entry.get("content"));
                 stmt.setString(4, entry.get("time_stamp"));
+                stmt.setString(5, entry.get("type"));
+                stmt.setString(6, entry.get("file_id"));
 
                 stmt.executeUpdate();
                 stmt.close();
@@ -77,9 +81,15 @@ public class HistoricalMessageManager extends DatabaseManager {
 
                     String sender = rs.getString("Sender");
                     String content = rs.getString("Content");
+                    String type = rs.getString("Type");
+                    String file_id = rs.getString("FileID");
+                    String time = Integer.toString(rs.getInt("Timestamp"));
                     entry.put("room_id", room_id);
                     entry.put("sender_name", sender);
                     entry.put("content", content);
+                    entry.put("type", type);
+                    entry.put("file_id", file_id);
+                    entry.put("time", time);
                     response.add(entry);
                 }
                 rs.close();
