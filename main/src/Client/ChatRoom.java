@@ -44,7 +44,7 @@ public class ChatRoom {
 
     public ChatRoom (String name, String type) {
         this.type = type;
-        this.id = name; // TODO chatroom's id == name ?
+        this.id = name;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatRoom.fxml"));
             Parent root = loader.load();
