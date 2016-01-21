@@ -149,6 +149,8 @@ public class ChatRoomController implements Initializable {
             else
                 confirm.setDisable(false);
         });
+        // focus textField
+        inputTextField.requestFocus();
     }
 
     protected class ContentCell extends TableCell<RoomListItem, String> {
