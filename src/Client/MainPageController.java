@@ -68,7 +68,7 @@ public class MainPageController implements Initializable {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                buildRoomMessage.setText("");
+                queryPersonMessage.setText("");
             }
         }, 5000);
     }
