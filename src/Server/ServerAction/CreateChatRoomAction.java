@@ -52,6 +52,14 @@ public class CreateChatRoomAction extends ServerAction {
                 message.put("room_id", Integer.toString(room_id));
                 RoomListManager roomListManager = new RoomListManager();
                 roomListManager.update(message);
+
+                Map<String, String> targetMessage = new HashMap<>();
+                targetMessage.put("account", message.get("name"));
+                targetMessage.put("room_id", message.get("room_id"));
+                targetMessage.put("room_type", message.get("room_type"));
+                targetMessage.put("room_name", message.get("sender_name"));
+                targetMessage.put("type", "add");
+                roomListManager.update(targetMessage);
             }
 
             notifyManager.update(message.get("name"), message.get("sender_name"));
