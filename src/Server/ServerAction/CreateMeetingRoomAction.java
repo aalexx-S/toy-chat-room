@@ -2,6 +2,8 @@ package Server.ServerAction;
 
 import Server.DatabaseManager.RoomInfoManager;
 import Server.DatabaseManager.RoomListManager;
+import Shared.ServerClientMessage;
+import Shared.ServerClientMessageBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,14 @@ public class CreateMeetingRoomAction extends ServerAction {
         message.put("account", message.get("sender_name"));
         RoomListManager roomListManager = new RoomListManager();
         roomListManager.update(message);
+
+        RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
+        List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(message.get("sender_name"));
+        ServerClientMessage responseMessage = ServerClientMessageBuilder.create()
+                                            .setInstruction(200)
+                                            .setList(roomList)
+                                            .build();
         //todo
-        //responseMessage
+        //ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
     }
 }

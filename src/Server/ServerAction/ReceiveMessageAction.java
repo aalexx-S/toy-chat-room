@@ -38,6 +38,15 @@ public class ReceiveMessageAction extends ServerAction {
                 message.put("room_type", "single");
                 message.put("room_name", roomInfoManager.queryName(message.get("room_id")));
                 roomListManager.update(message);
+
+                RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
+                List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(receivers.get(1));
+                ServerClientMessage forwardMessage = ServerClientMessageBuilder.create()
+                                                .setInstruction(200)
+                                                .setList(roomList)
+                                                .build();
+                //todo
+                //ServerConnection.getInstance().send(receivers.get(1), forwardMessage);
             }
         }
 
@@ -49,7 +58,9 @@ public class ReceiveMessageAction extends ServerAction {
                                             .setRoomId(Integer.valueOf(message.get("room_id")))
                                             .setList(messageInfo)
                                             .build();
-        //todo
-        //ServerConnection.getInstsance().send(receivers, forwardMessage);
+        for (String receiver : receivers) {
+            //todo
+            //ServerConnection.getInstsance().send(receiver, forwardMessage);
+        }
     }
 }
