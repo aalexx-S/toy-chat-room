@@ -40,7 +40,7 @@ public class ReceiveMessageAction extends ServerAction {
                 roomMessage.put("account", receivers.get(1));
                 roomMessage.put("room_id", message.get("room_id"));
                 roomMessage.put("room_type", "single");
-                roomMessage.put("room_name", roomInfoManager.queryName(message.get("room_id")));
+                roomMessage.put("room_name", receivers.get(0));
                 roomMessage.put("type", "add");
                 roomListManager.update(roomMessage);
 

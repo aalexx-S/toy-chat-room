@@ -44,7 +44,7 @@ public class UploadFinishAction extends ServerAction {
                 roomMessage.put("account", receivers.get(1));
                 roomMessage.put("room_id", fileMessage.get("room_id"));
                 roomMessage.put("room_type", "single");
-                roomMessage.put("room_name", roomInfoManager.queryName(roomMessage.get("room_id")));
+                roomMessage.put("room_name", receivers.get(0));
                 roomMessage.put("type", "add");
                 roomListManager.update(roomMessage);
 

@@ -28,12 +28,13 @@ public class CreateChatRoomAction extends ServerAction {
         if (accountManager.query(message.get("name"))) {
             //check if object has already added subject
             NotifyManager notifyManager = new NotifyManager();
-            if (!notifyManager.query(message.get("sender_name")).contains(message.get("name"))) {
+            if (!notifyManager.query(message.get("sender_name")).contains(message.get("name"))
+                    && !notifyManager.query(message.get("name")).contains(message.get("sender_name"))) {
                 RoomInfoManager roomInfoManager = new RoomInfoManager();
                 List<String> roomUsers = new ArrayList<>();
                 roomUsers.add(message.get("sender_name"));
                 roomUsers.add(message.get("name"));
-                int room_id = roomInfoManager.add(roomUsers, null);
+                int room_id = roomInfoManager.add(roomUsers, "");
                 message.put("room_id", Integer.toString(room_id));
                 RoomListManager roomListManager = new RoomListManager();
                 roomListManager.update(message);
@@ -41,8 +42,8 @@ public class CreateChatRoomAction extends ServerAction {
 
             notifyManager.update(message.get("name"), message.get("sender_name"));
             responseMessage = ServerClientMessageBuilder.create()
-                    .setInstruction(410)
-                    .setContent("Create Chat Room Succeed")
+                    .setInstruction(420)
+                    .setContent("The user exists!")
                     .build();
         }
         else {

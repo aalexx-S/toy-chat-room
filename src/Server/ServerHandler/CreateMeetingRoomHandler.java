@@ -18,6 +18,7 @@ public class CreateMeetingRoomHandler extends ServerHandler {
             message.put("room_type", "multiple");
             message.put("room_name", message.get("name"));
             message.put("account", message.get("sender_name"));
+            message.put("type", "add");
             CreateMeetingRoomAction createMeetingRoomAction = new CreateMeetingRoomAction(message);
             createMeetingRoomAction.doAction();
             return true;

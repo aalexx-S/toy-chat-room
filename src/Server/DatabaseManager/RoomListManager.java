@@ -71,9 +71,9 @@ public class RoomListManager extends DatabaseManager {
                     String dirty_ids = rs.getString("RoomIDs");
                     String dirty_types = rs.getString("RoomTypes");
                     String dirty_names = rs.getString("RoomNames");
-                    String[] ids = dirty_ids.split(".");
-                    String[] types = dirty_types.split(".");
-                    String[] names = dirty_names.split(".");
+                    String[] ids = dirty_ids.split("\\.");
+                    String[] types = dirty_types.split("\\.");
+                    String[] names = dirty_names.split("\\.");
 
                     for (int i = 0; i < ids.length; i++) {
                         Map<String, String> entry = new HashMap<String, String>();
@@ -124,9 +124,16 @@ public class RoomListManager extends DatabaseManager {
                     dirty_types = rs.getString("RoomTypes");
                     dirty_names = rs.getString("RoomNames");
                     if (add) {
-                        dirty_ids += "." + entry.get("room_id");
-                        dirty_types += "." + entry.get("room_type");
-                        dirty_names += "." + entry.get("room_name");
+                        if (dirty_ids != null) {
+                            dirty_ids += "." + entry.get("room_id");
+                            dirty_types += "." + entry.get("room_type");
+                            dirty_names += "." + entry.get("room_name");
+                        }
+                        else {
+                            dirty_ids = entry.get("room_id");
+                            dirty_types = entry.get("room_type");
+                            dirty_names = entry.get("room_name");
+                        }
                     }
                     else {
                         String target = entry.get("room_id");

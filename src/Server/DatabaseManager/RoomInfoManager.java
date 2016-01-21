@@ -153,7 +153,7 @@ public class RoomInfoManager extends DatabaseManager {
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     String dirty_users = rs.getString("Users");
-                    String[] users = dirty_users.split(".");
+                    String[] users = dirty_users.split("\\.");
                     for (String user : users) {
                         response.add(user);
                     }
@@ -221,7 +221,7 @@ public class RoomInfoManager extends DatabaseManager {
                     if (rs.next()) {
                         if (rs.getString("RoomName").equals("")) { //room type: single
                             String dirty_users = rs.getString("Users");
-                            String[] roommates = dirty_users.split(".");
+                            String[] roommates = dirty_users.split("\\.");
                             for (String mate : roommates) {
                                 if (!mate.equals(account)) {
                                     response.add(mate);
