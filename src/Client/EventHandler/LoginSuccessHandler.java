@@ -21,7 +21,6 @@ public class LoginSuccessHandler extends Handler {
     @Override
     public boolean doAction (ServerClientMessage msg) {
         if (msg.getInstruction() == 100) { // login success
-            client.loginSuccess();
             List<Map<String, String>> sin = new ArrayList<>();
             List<Map<String, String>> mul = new ArrayList<>();
             for (Map<String, String> i : msg.getList()) {
