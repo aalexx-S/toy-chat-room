@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.net.Socket;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -32,7 +33,7 @@ public class ClientConnection {
         this.handler = handler;
     }
 
-    public void setupConnection(String ip, int port){
+    public void setIpPort(String ip, int port){
         this.server_ip = ip;
         this.server_port = port;
     }
@@ -78,8 +79,12 @@ public class ClientConnection {
         this.sendFileQueue.add(file);
     }
 
-    public void send (ServerClientMessage message) throws Exception {
-        serverConnection.send(new ServerClientMessageToJSONFactory().create(message));
+    public void send (Map<String, String> message) {
+        try {
+            serverConnection.send(new MapToJSONFactory().create(message));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void start () {
@@ -99,6 +104,8 @@ public class ClientConnection {
             serverConnection.start();
         } catch (Exception e) {
             e.printStackTrace();
+            readingThread.interrupt();
+            Client.getLoginPageController().setMessage("Cannot connect to Server");
         }
     }
 }

@@ -1,5 +1,6 @@
 package Client.EventHandler;
 
+import Client.ClientConnection;
 import Shared.ServerClientMessage;
 
 /**
@@ -13,7 +14,7 @@ public class AckSendFileHandler extends Handler {
     @Override
     public boolean doAction (ServerClientMessage msg) {
         if (msg.getInstruction() == 500) { // ack send file
-            // todo
+            ClientConnection.getSharedInstance().startSendingFile(msg.getRoomId());
         }
         return false;
     }

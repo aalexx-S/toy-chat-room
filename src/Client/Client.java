@@ -80,14 +80,20 @@ public class Client extends Application {
             msg.put("instruction", "REGISTER");
             msg.put("account", loginPageController.getAccount());
             msg.put("password", loginPageController.getPassword());
-            // todo send
+            ClientConnection.getSharedInstance().setIpPort(loginPageController.getIp(),
+                    Integer.parseInt(loginPageController.getPort()));
+            ClientConnection.getSharedInstance().start();
+            ClientConnection.getSharedInstance().send(msg);
         });
         loginPageController.setLoginOnAction(event -> {
             Map<String, String> msg = new HashMap<String, String>();
             msg.put("instruction", "LOGIN");
             msg.put("account", loginPageController.getAccount());
             msg.put("password", loginPageController.getPassword());
-            // todo send
+            ClientConnection.getSharedInstance().setIpPort(loginPageController.getIp(),
+                    Integer.parseInt(loginPageController.getPort()));
+            ClientConnection.getSharedInstance().start();
+            ClientConnection.getSharedInstance().send(msg);
         });
 
 

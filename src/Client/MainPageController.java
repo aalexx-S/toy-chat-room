@@ -91,7 +91,7 @@ public class MainPageController implements Initializable {
             Map<String, String> syncMsg = new HashMap<>();
             syncMsg.put("instruction", "OPEN_ROOM");
             syncMsg.put("room_id", roomId);
-            // todo send
+            ClientConnection.getSharedInstance().send(syncMsg);
             // set send behavior
             r.setOnSendConfirm(event -> {
                 String inputText = r.getInputText();
@@ -101,21 +101,22 @@ public class MainPageController implements Initializable {
                     sendTextMsg.put("instruction", "SEND_MESSAGE");
                     sendTextMsg.put("room_id", roomId);
                     sendTextMsg.put("content", inputText);
-                    // todo send
+                    ClientConnection.getSharedInstance().send(sendTextMsg);
                 }
                 if (chosenFile != null) {
                     Map<String, String> sendFileMsg = new HashMap<String, String>();
                     sendFileMsg.put("instruction", "SEND_FILE");
                     sendFileMsg.put("room_id", roomId);
                     sendFileMsg.put("content", chosenFile.getName());
-                    // todo send message and file
+                    ClientConnection.getSharedInstance().addQueueingSendFile(chosenFile);
+                    ClientConnection.getSharedInstance().send(sendFileMsg);
                 }
             });
             r.setOnDownload(fileId -> {
                 Map<String, String> requestFileMsg = new HashMap<String, String>();
                 requestFileMsg.put("instruction", "REQUEST_FILE");
                 requestFileMsg.put("name", fileId);
-                //todo send
+                ClientConnection.getSharedInstance().send(requestFileMsg);
                 return null;
             });
             r.setAddPeopleCallBack(name -> {
@@ -123,14 +124,14 @@ public class MainPageController implements Initializable {
                 addPersonMsg.put("instruction", "ADD_PERSON");
                 addPersonMsg.put("room_id", roomId);
                 addPersonMsg.put("name", name);
-                // todo send
+                ClientConnection.getSharedInstance().send(addPersonMsg);
                 return null;
             });
             r.setLeaveCallBack(event -> {
                 Map<String, String> leaveMsg = new HashMap<String, String>();
                 leaveMsg.put("instruction", "LEAVE_ROOM");
                 leaveMsg.put("room_id", roomId);
-                // todo send
+                ClientConnection.getSharedInstance().send(leaveMsg);
             });
             // attach
             observer.put(roomId, r);
@@ -153,7 +154,7 @@ public class MainPageController implements Initializable {
             Map<String, String> queryNameMsg = new HashMap<String, String>();
             queryNameMsg.put("instruction", "CREATE_CHAT_ROOM");
             queryNameMsg.put("name", param);
-            // todo send
+            ClientConnection.getSharedInstance().send(queryNameMsg);
             return null;
         });
         build.setTextFieldChangeListener((observable, oldValue, newValue) -> {
@@ -165,7 +166,7 @@ public class MainPageController implements Initializable {
             Map<String, String> buildRoomMsg = new HashMap<String, String>();
             buildRoomMsg.put("instruction", "CREATE_MEETING_ROOM");
             buildRoomMsg.put("room_name", param);
-            // todo send
+            ClientConnection.getSharedInstance().send(buildRoomMsg);
             return null;
         });
         // hide status on multiple
