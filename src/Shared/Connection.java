@@ -44,7 +44,7 @@ public class Connection extends Thread {
                         System.err.println("[send] " + msg);
                         oos.writeObject(msg.toString());
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        System.err.println("[Log] Client logout.");
                     }
                 }
             }
@@ -58,7 +58,11 @@ public class Connection extends Thread {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("[Log] Client logout.");
+            JSONObject logoutMsg = new JSONObject();
+            logoutMsg.put("instruction", "LOGOUT");
+            readQueue.add(logoutMsg);
+            interrupt();
         }
     }
 }
