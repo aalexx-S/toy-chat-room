@@ -10,9 +10,9 @@ import java.util.*;
 public class JSONToServerClientMessageFactory {
     public ServerClientMessage create (JSONObject msg) {
         ServerClientMessageBuilder builder = ServerClientMessageBuilder.create()
-                .setInstruction(msg.getInt("instruction"));
+                .setInstruction(Integer.parseInt(msg.getString("instruction")));
         if (msg.has("room_id"))
-            builder.setRoomId(msg.getInt("room_id"));
+            builder.setRoomId(Integer.parseInt(msg.getString("room_id")));
         if (msg.has("content"))
             builder.setContent(msg.getString("content"));
         if (msg.has("list")) {
