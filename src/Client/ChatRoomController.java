@@ -86,7 +86,7 @@ public class ChatRoomController implements Initializable {
         this.messages = FXCollections.observableArrayList();
         for (Map<String, String> entry : messages) {
             ChatRoomMessage item = new ChatRoomMessage(entry.get("sender_name"), entry.get("type"), entry.get("content"),
-                    entry.get("time"), entry.get("file_id"));
+                    entry.get("time_stamp"), entry.get("file_id"));
             this.messages.add(item);
         }
         contentTable.setItems(this.messages);
@@ -94,7 +94,7 @@ public class ChatRoomController implements Initializable {
 
     public void addMessages (Map<String, String> entry) {
         ChatRoomMessage item = new ChatRoomMessage(entry.get("sender_name"), entry.get("type"), entry.get("content"),
-                entry.get("time"), entry.get("file_id"));
+                entry.get("time_stamp"), entry.get("file_id"));
         this.messages.add(item);
         contentTable.setItems(this.messages);
     }
