@@ -66,7 +66,7 @@ public class HistoricalMessageManager extends DatabaseManager {
 
     public List<Map<String, String>> query(String room_id) {
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<Map<String, String>> response = new ArrayList<Map<String, String>>();
         while (true) {
             try {
@@ -74,8 +74,10 @@ public class HistoricalMessageManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:message.db");
                 c.setAutoCommit(false);
 
-                stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM Message WHERE RoomID = " + room_id + ";");
+                stmt = c.prepareStatement("SELECT * FROM Message WHERE RoomID = ?;");
+                stmt.setString(1, room_id);
+                ResultSet rs = stmt.executeQuery();
+
                 while (rs.next()) {
                     Map<String, String> entry = new HashMap<String, String>();
 

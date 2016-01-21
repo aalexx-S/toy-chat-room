@@ -73,7 +73,7 @@ public class FileManager extends DatabaseManager {
 
     public String queryFileName(String token) {
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         String response = new String();
         while (true) {
             try {
@@ -81,8 +81,9 @@ public class FileManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:file.db");
                 c.setAutoCommit(false);
 
-                stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery( "SELECT FileName FROM File WHERE Token = " + token + ";");
+                stmt = c.prepareStatement("SELECT SenderName FROM File WHERE Token = ?;");
+                stmt.setString(1, token);
+                ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     response = rs.getString("FileName");
                 }
@@ -103,7 +104,7 @@ public class FileManager extends DatabaseManager {
 
     public String queryRoomID(String token) {
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         String response = new String();
         while (true) {
             try {
@@ -111,8 +112,9 @@ public class FileManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:file.db");
                 c.setAutoCommit(false);
 
-                stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery( "SELECT RoomID FROM File WHERE Token = " + token + ";");
+                stmt = c.prepareStatement("SELECT SenderName FROM File WHERE Token = ?;");
+                stmt.setString(1, token);
+                ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     response = rs.getString("RoomID");
                 }
@@ -133,7 +135,7 @@ public class FileManager extends DatabaseManager {
 
     public String querySenderName(String token) {
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         String response = new String();
         while (true) {
             try {
@@ -141,8 +143,9 @@ public class FileManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:file.db");
                 c.setAutoCommit(false);
 
-                stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery( "SELECT SenderName FROM File WHERE Token = " + token + ";");
+                stmt = c.prepareStatement("SELECT SenderName FROM File WHERE Token = ?;");
+                stmt.setString(1, token);
+                ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     response = rs.getString("SenderName");
                 }

@@ -140,7 +140,7 @@ public class RoomInfoManager extends DatabaseManager {
 
     public List<String> query(String room_id) {
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String> response = new ArrayList<String>();
         while (true) {
             try {
@@ -148,8 +148,9 @@ public class RoomInfoManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:roominfo.db");
                 c.setAutoCommit(false);
 
-                stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery( "SELECT Users FROM RoomInfo WHERE RoomID = " + room_id + ";" );
+                stmt = c.prepareStatement("SELECT RoomName FROM RoomInfo WHERE RoomID = ?;");
+                stmt.setString(1, room_id);
+                ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     String dirty_users = rs.getString("Users");
                     String[] users = dirty_users.split(".");
@@ -174,7 +175,7 @@ public class RoomInfoManager extends DatabaseManager {
 
     public String queryName(String room_id) {
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         String response = "";
         while (true) {
             try {
@@ -182,8 +183,9 @@ public class RoomInfoManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:roominfo.db");
                 c.setAutoCommit(false);
 
-                stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery( "SELECT RoomName FROM RoomInfo WHERE RoomID = " + room_id + ";" );
+                stmt = c.prepareStatement("SELECT RoomName FROM RoomInfo WHERE RoomID = ?;");
+                stmt.setString(1, room_id);
+                ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     response = rs.getString("RoomName");
                 }
@@ -205,7 +207,7 @@ public class RoomInfoManager extends DatabaseManager {
     public List<String> queryFriends(List<String> room_ids, String account) {
         List<String> response = new ArrayList<>();
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         while (true) {
             try {
                 Class.forName("org.sqlite.JDBC");
@@ -213,8 +215,9 @@ public class RoomInfoManager extends DatabaseManager {
                 c.setAutoCommit(false);
 
                 for (int i = 0; i < room_ids.size(); i++) {
-                    stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM RoomInfo WHERE RoomID = " + room_ids.get(i) + ";");
+                    stmt = c.prepareStatement("SELECT * FROM RoomInfo WHERE RoomID = ?;");
+                    stmt.setString(1, room_ids.get(i));
+                    ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
                         if (rs.getString("RoomName").equals("")) { //room type: single
                             String dirty_users = rs.getString("Users");
