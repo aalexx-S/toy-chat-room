@@ -24,7 +24,7 @@ public class CreateMeetingRoomAction extends ServerAction {
         RoomInfoManager roomInfoManager = new RoomInfoManager();
         List<String> roomUsers = new ArrayList<>();
         roomUsers.add(message.get("sender_name"));
-        int room_id = roomInfoManager.add(roomUsers, message.get("name"));
+        int room_id = roomInfoManager.add(roomUsers, message.get("room_name"));
         message.put("room_id", Integer.toString(room_id));
         RoomListManager roomListManager = new RoomListManager();
         roomListManager.update(message);

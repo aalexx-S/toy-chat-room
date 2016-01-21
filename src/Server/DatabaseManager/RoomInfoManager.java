@@ -98,7 +98,7 @@ public class RoomInfoManager extends DatabaseManager {
                         dirty_users += "." + target;
                     else {
                         List<String> user_list = new ArrayList<String>();
-                        String[] users = dirty_users.split(".");
+                        String[] users = dirty_users.split("\\.");
                         for (String user : users) {
                             if (!user.equals(target))
                                 user_list.add(user);
@@ -120,6 +120,7 @@ public class RoomInfoManager extends DatabaseManager {
                 stmt.close();
                 c.commit();
                 c.close();
+                break;
             }
             catch (Exception e) {
                 if (checkLock(e.getMessage(), c))
@@ -148,12 +149,12 @@ public class RoomInfoManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:roominfo.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("SELECT RoomName FROM RoomInfo WHERE RoomID = ?;");
+                stmt = c.prepareStatement("SELECT * FROM RoomInfo WHERE RoomID = ?;");
                 stmt.setString(1, room_id);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     String dirty_users = rs.getString("Users");
-                    String[] users = dirty_users.split(".");
+                    String[] users = dirty_users.split("\\.");
                     for (String user : users) {
                         response.add(user);
                     }
@@ -221,7 +222,7 @@ public class RoomInfoManager extends DatabaseManager {
                     if (rs.next()) {
                         if (rs.getString("RoomName").equals("")) { //room type: single
                             String dirty_users = rs.getString("Users");
-                            String[] roommates = dirty_users.split(".");
+                            String[] roommates = dirty_users.split("\\.");
                             for (String mate : roommates) {
                                 if (!mate.equals(account)) {
                                     response.add(mate);

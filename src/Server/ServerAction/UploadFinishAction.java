@@ -22,12 +22,14 @@ public class UploadFinishAction extends ServerAction {
     public void doAction() {
         FileManager fileManager = new FileManager();
         Map<String, String> fileMessage = new HashMap<>();
+        System.err.println("token: " + message.get("file_id"));
         fileMessage.put("room_id", fileManager.queryRoomID(message.get("file_id")));
         fileMessage.put("sender_name", fileManager.querySenderName(message.get("file_id")));
         fileMessage.put("content", fileManager.queryFileName(message.get("file_id")));
         fileMessage.put("time_stamp", message.get("time_stamp"));
         fileMessage.put("type", message.get("type"));
-        fileMessage.put("file_id", message.get("content"));
+        fileMessage.put("file_id", message.get("file_id"));
+        System.err.println(fileMessage);
 
         HistoricalMessageManager historicalMessageManger = new HistoricalMessageManager();
         historicalMessageManger.add(fileMessage);
@@ -44,7 +46,7 @@ public class UploadFinishAction extends ServerAction {
                 roomMessage.put("account", receivers.get(1));
                 roomMessage.put("room_id", fileMessage.get("room_id"));
                 roomMessage.put("room_type", "single");
-                roomMessage.put("room_name", roomInfoManager.queryName(roomMessage.get("room_id")));
+                roomMessage.put("room_name", receivers.get(0));
                 roomMessage.put("type", "add");
                 roomListManager.update(roomMessage);
 

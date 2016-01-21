@@ -67,7 +67,7 @@ public class NotifyManager extends DatabaseManager {
                 ResultSet rs = stmt.executeQuery( "SELECT Notify FROM Notify;" );
                 if (rs.next()) {
                     String dirty_targets = rs.getString("Notify");
-                    String[] targets = dirty_targets.split(".");
+                    String[] targets = dirty_targets.split("\\.");
                     for (String target : targets) {
                         response.add(target);
                     }

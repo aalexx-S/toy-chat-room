@@ -91,7 +91,7 @@ public class HistoricalMessageManager extends DatabaseManager {
                     entry.put("content", content);
                     entry.put("type", type);
                     entry.put("file_id", file_id);
-                    entry.put("time", time);
+                    entry.put("time_stamp", time);
                     response.add(entry);
                 }
                 rs.close();

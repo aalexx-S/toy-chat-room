@@ -82,7 +82,10 @@ public class ChatRoom {
     }
 
     public void setLeaveCallBack (EventHandler<ActionEvent> handler) {
-        controller.setLeaveHandler(event -> handler.handle(new ActionEvent()));
+        controller.setLeaveHandler(event -> {
+            close();
+            handler.handle(new ActionEvent());
+        });
     }
 
     public void setAddPersonMessage (String message){

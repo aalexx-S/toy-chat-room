@@ -22,7 +22,7 @@ public class RoomListUpdateAction {
         RoomInfoManager roomInfoManager = new RoomInfoManager();
         List<String> friends = roomInfoManager.queryFriends(roomIds, account);
         List<String> status = OnlineStatusManager.getInstance().query(friends);
-        for (int i = 0; i < roomList.size(); i++)
+        for (int i = 0; i < status.size(); i++)
             roomList.get(i).put("status", status.get(i));
         return roomList;
     }
