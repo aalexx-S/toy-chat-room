@@ -1,5 +1,6 @@
 package Server;
 
+import Server.DatabaseManager.*;
 import Server.ServerHandler.*;
 
 import java.net.Inet4Address;
@@ -20,6 +21,14 @@ public class Server {
             System.err.println("Usage: java -jar Server.jar [port]");
             return;
         }
+
+        new AccountManager().createTable();
+        new FileManager().createTable();
+        new HistoricalMessageManager().createTable();
+        new NotifyManager().createTable();
+        new RoomInfoManager().createTable();
+        new RoomListManager().createTable();
+        
         int port = Integer.parseInt(args[0]);
         portString = args[0];
         // get ip
