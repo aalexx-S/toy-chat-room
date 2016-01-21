@@ -4,6 +4,7 @@ import Server.DatabaseManager.AccountManager;
 import Server.DatabaseManager.NotifyManager;
 import Server.DatabaseManager.RoomInfoManager;
 import Server.DatabaseManager.RoomListManager;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -50,7 +51,7 @@ public class CreateChatRoomAction extends ServerAction {
                     .setContent("No Such User")
                     .build();
         }
-        //ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
+        ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
 
         RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
         List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(message.get("sender_name"));
@@ -58,7 +59,6 @@ public class CreateChatRoomAction extends ServerAction {
                         .setInstruction(200)
                         .setList(roomList)
                         .build();
-        //todo
-        //ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
+        ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
     }
 }

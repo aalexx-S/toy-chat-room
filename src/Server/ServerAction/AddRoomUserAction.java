@@ -3,6 +3,7 @@ package Server.ServerAction;
 import Server.DatabaseManager.AccountManager;
 import Server.DatabaseManager.RoomInfoManager;
 import Server.DatabaseManager.RoomListManager;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -40,8 +41,8 @@ public class AddRoomUserAction extends ServerAction {
                 .setRoomId(Integer.valueOf(message.get("room_id")))
                 .setContent(response)
                 .build();
-        //todo
-        //ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
+
+        ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
 
         RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
         List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(message.get("name"));
@@ -49,7 +50,6 @@ public class AddRoomUserAction extends ServerAction {
                         .setInstruction(200)
                         .setList(roomList)
                         .build();
-        //todo
-        //ServerConnection.getInstance().send(message.get("name"), responseMessage);
+        ServerConnection.getInstance().send(message.get("name"), responseMessage);
     }
 }

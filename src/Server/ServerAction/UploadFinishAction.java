@@ -1,6 +1,7 @@
 package Server.ServerAction;
 
 import Server.DatabaseManager.*;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -53,8 +54,7 @@ public class UploadFinishAction extends ServerAction {
                         .setInstruction(200)
                         .setList(roomList)
                         .build();
-                //todo
-                //ServerConnection.getInstance().send(receivers.get(1), forwardMessage);
+                ServerConnection.getInstance().send(receivers.get(1), forwardMessage);
             }
         }
 
@@ -65,9 +65,7 @@ public class UploadFinishAction extends ServerAction {
                 .setRoomId(Integer.valueOf(fileMessage.get("room_id")))
                 .setList(messageInfo)
                 .build();
-        for (String receiver : receivers) {
-            //todo
-            //ServerConnection.getInstsance().send(receiver, forwardMessage);
-        }
+        for (String receiver : receivers)
+            ServerConnection.getInstance().send(receiver, forwardMessage);
     }
 }

@@ -30,7 +30,7 @@ public class ServerConnection {
         readQueueSequenceMapping.put(serverQueue, 0);
     }
 
-    public static ServerConnection getSharedInstanced () {
+    public static ServerConnection getInstance () {
         if (sharedInstanced == null) {
             synchronized (ServerConnection.class) {
                 if (sharedInstanced == null) {
@@ -61,17 +61,17 @@ public class ServerConnection {
         this.port = port;
     }
 
-	public void send (Integer sequence, Map<String, String> message) {
+	public void send (Integer sequence, ServerClientMessage message) {
         try {
-            sequenceConnectionMapping.get(sequence).send(new MapToJSONFactory().create(message));
+            sequenceConnectionMapping.get(sequence).send(new ServerClientMessageToJSONFactory().create(message));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void send (String name, Map<String, String> message) {
+    public void send (String name, ServerClientMessage message) {
         try {
-            sequenceConnectionMapping.get(nameSequenceMapping.get(name)).send(new MapToJSONFactory().create(message));
+            sequenceConnectionMapping.get(nameSequenceMapping.get(name)).send(new ServerClientMessageToJSONFactory().create(message));
         } catch (Exception e) {
             e.printStackTrace();
         }

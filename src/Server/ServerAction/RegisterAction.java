@@ -3,6 +3,7 @@ package Server.ServerAction;
 import Server.DatabaseManager.AccountManager;
 import Server.DatabaseManager.NotifyManager;
 import Server.DatabaseManager.RoomListManager;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -26,8 +27,7 @@ public class RegisterAction extends ServerAction {
                     .setInstruction(110)
                     .setContent("Register Fail")
                     .build();
-            //// TODO: 2016/1/20
-            //send responseMessage back
+            ServerConnection.getInstance().send(Integer.valueOf(message.get("sequence_number")), responseMessage);
         }
         else {
             accountManager.add(message);

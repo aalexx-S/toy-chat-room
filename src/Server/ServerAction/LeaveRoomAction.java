@@ -2,6 +2,7 @@ package Server.ServerAction;
 
 import Server.DatabaseManager.RoomInfoManager;
 import Server.DatabaseManager.RoomListManager;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -29,7 +30,6 @@ public class LeaveRoomAction extends ServerAction {
                                             .setInstruction(200)
                                             .setList(roomList)
                                             .build();
-        //todo
-        //ServerConnection.getInstance().send(message.get("sender_name", responseMessage);
+        ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
     }
 }

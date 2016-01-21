@@ -65,13 +65,12 @@ public class Server {
                                 new UploadFinishHandler(
                                 logoutHandler
                                 ))))))))))));
-        //todo
-        /*ServerConnection serverConnection = ServerConnection.getInstance();
 
-        serverConnection.setIP(ipString);
-        serverConnection.setPort(port);
+        ServerConnection serverConnection = ServerConnection.getInstance();
+
+        serverConnection.setIpPort(ipString, port);
         serverConnection.setHandler(handler);
 
-        serverConnection.startListening();*/
+        serverConnection.start();
     }
 }

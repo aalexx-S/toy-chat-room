@@ -4,6 +4,7 @@ import Server.DatabaseManager.AccountManager;
 import Server.DatabaseManager.NotifyManager;
 import Server.DatabaseManager.OnlineStatusManager;
 import Server.DatabaseManager.RoomListManager;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -39,8 +40,8 @@ public class LoginAction extends ServerAction {
                     .setContent("Login Fail")
                     .build();
         }
-        //send back responseMessage
-        //attach account to sequence number
+        ServerConnection.getInstance().addName(message.get("account"), Integer.valueOf(message.get("sequence_number")));
+        ServerConnection.getInstance().send(Integer.valueOf(message.get("sequence_number")), responseMessage);
 
         //notify user's friends
         NotifyManager notifyManager = new NotifyManager();

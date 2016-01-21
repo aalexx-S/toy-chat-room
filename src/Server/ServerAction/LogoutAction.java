@@ -2,6 +2,7 @@ package Server.ServerAction;
 
 import Server.DatabaseManager.NotifyManager;
 import Server.DatabaseManager.OnlineStatusManager;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -29,8 +30,8 @@ public class LogoutAction extends ServerAction {
                                                 .setInstruction(200)
                                                 .setList(roomList)
                                                 .build();
-            //ServerConnection.getInstance().send(observer, forwardMessage);
+            ServerConnection.getInstance().send(observer, forwardMessage);
         }
-        //detach account from connection map
+        ServerConnection.getInstance().removeName(message.get("sender_name"));
     }
 }

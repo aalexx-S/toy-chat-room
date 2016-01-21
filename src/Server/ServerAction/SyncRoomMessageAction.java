@@ -1,6 +1,7 @@
 package Server.ServerAction;
 
 import Server.DatabaseManager.HistoricalMessageManager;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -24,8 +25,6 @@ public class SyncRoomMessageAction extends ServerAction {
         ServerClientMessage responseMessage = ServerClientMessageBuilder.create()
                 .setInstruction(300).setRoomId(Integer.getInteger(message.get("room_id"))).setList(history).build();
         List<String> receiver = new ArrayList<>();
-        receiver.add(message.get("sender_name"));
-        //// TODO: 2016/1/20
-        //Server.getInstance().send(receiver, responseMessage);
+        ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
     }
 }

@@ -4,6 +4,7 @@ import Server.DatabaseManager.HistoricalMessageManager;
 import Server.DatabaseManager.NotifyManager;
 import Server.DatabaseManager.RoomInfoManager;
 import Server.DatabaseManager.RoomListManager;
+import Server.ServerConnection;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
@@ -49,8 +50,7 @@ public class ReceiveMessageAction extends ServerAction {
                                                 .setInstruction(200)
                                                 .setList(roomList)
                                                 .build();
-                //todo
-                //ServerConnection.getInstance().send(receivers.get(1), forwardMessage);
+                ServerConnection.getInstance().send(receivers.get(1), forwardMessage);
             }
         }
 
@@ -61,9 +61,7 @@ public class ReceiveMessageAction extends ServerAction {
                                             .setRoomId(Integer.valueOf(message.get("room_id")))
                                             .setList(messageInfo)
                                             .build();
-        for (String receiver : receivers) {
-            //todo
-            //ServerConnection.getInstsance().send(receiver, forwardMessage);
-        }
+        for (String receiver : receivers)
+            ServerConnection.getInstance().send(receiver, forwardMessage);
     }
 }

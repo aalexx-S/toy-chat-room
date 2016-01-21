@@ -1,6 +1,9 @@
 package Server.ServerAction;
 
 import Server.DatabaseManager.FileManager;
+import Server.ServerConnection;
+import Shared.ServerClientMessage;
+import Shared.ServerClientMessageBuilder;
 
 import java.io.File;
 import java.util.Map;
@@ -19,7 +22,11 @@ public class ReceiveFileAction extends ServerAction {
         new File("./uploadedFiles").mkdirs();
         FileManager fileManager = new FileManager();
         int token = fileManager.add(message);
-        //todo
-        //construct ack send file message
+        int filePort = ServerConnection.getInstance().startListeningForReceiveFile("./uploadedFiles/" + Integer.toString(token) + "_uploadedFile");
+        ServerClientMessage ackMessage = ServerClientMessageBuilder.create()
+                                        .setInstruction(500)
+                                        .setRoomId(filePort)
+                                        .build();
+        ServerConnection.getInstance().send(message.get("sender_name"), ackMessage);
     }
 }
