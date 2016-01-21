@@ -8,9 +8,9 @@ import java.util.Map;
 /**
  * Created by Tony on 2016/1/20.
  */
-public class LeaveRoom extends ServerAction {
+public class LeaveRoomAction extends ServerAction {
 
-    public LeaveRoom(Map<String, String> message) {
+    public LeaveRoomAction(Map<String, String> message) {
         super(message);
     }
 

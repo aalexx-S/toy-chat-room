@@ -26,6 +26,8 @@ public class RegisterAction extends ServerAction {
                     .setInstruction(110)
                     .setContent("Register Fail")
                     .build();
+            //// TODO: 2016/1/20
+            //send responseMessage back
         }
         else {
             accountManager.add(message);
@@ -33,11 +35,7 @@ public class RegisterAction extends ServerAction {
             roomListManager.add(message.get("account"));
             NotifyManager notifyManager = new NotifyManager();
             notifyManager.add(message.get("account"));
-            responseMessage = ServerClientMessageBuilder.create()
-                    .setInstruction(100)
-                    .build();
+            LoginAction loginAction = new LoginAction(message);
         }
-        //// TODO: 2016/1/20
-        //send responseMessage back
     }
 }

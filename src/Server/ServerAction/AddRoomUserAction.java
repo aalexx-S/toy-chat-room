@@ -13,9 +13,9 @@ import java.util.Map;
 /**
  * Created by Tony on 2016/1/20.
  */
-public class AddRoomUser extends ServerAction {
+public class AddRoomUserAction extends ServerAction {
 
-    public AddRoomUser(Map<String, String> message) {
+    public AddRoomUserAction(Map<String, String> message) {
         super(message);
     }
 

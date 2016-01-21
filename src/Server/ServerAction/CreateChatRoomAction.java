@@ -14,9 +14,9 @@ import java.util.Map;
 /**
  * Created by Tony on 2016/1/20.
  */
-public class CreateChatRoom extends ServerAction {
+public class CreateChatRoomAction extends ServerAction {
 
-    public CreateChatRoom(Map<String, String> message) {
+    public CreateChatRoomAction(Map<String, String> message) {
         super(message);
     }
 

@@ -11,9 +11,9 @@ import java.util.Map;
 /**
  * Created by Tony on 2016/1/20.
  */
-public class SyncRoomMessage extends ServerAction {
+public class SyncRoomMessageAction extends ServerAction {
 
-    public SyncRoomMessage(Map<String, String> message) {
+    public SyncRoomMessageAction(Map<String, String> message) {
         super(message);
     }
 

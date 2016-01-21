@@ -10,9 +10,9 @@ import java.util.Map;
 /**
  * Created by Tony on 2016/1/20.
  */
-public class CreateMeetingRoom extends ServerAction {
+public class CreateMeetingRoomAction extends ServerAction {
 
-    public CreateMeetingRoom(Map<String, String> message) {
+    public CreateMeetingRoomAction(Map<String, String> message) {
         super(message);
     }
 
