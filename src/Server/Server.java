@@ -62,8 +62,9 @@ public class Server {
                                 new RequestFileHandler(
                                 new SendFileHandler(
                                 new SendMessageHandler(
+                                new UploadFinishHandler(
                                 logoutHandler
-                                )))))))))));
+                                ))))))))))));
         //todo
         /*ServerConnection serverConnection = ServerConnection.getInstance();
 

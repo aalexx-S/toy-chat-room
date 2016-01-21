@@ -15,6 +15,9 @@ public class CreateMeetingRoomHandler extends ServerHandler {
     @Override
     public boolean doAction(Map<String, String> message) {
         if (message.get("instruction").equals("CREATE_MEETING_ROOM")) {
+            message.put("room_type", "multiple");
+            message.put("room_name", message.get("name"));
+            message.put("account", message.get("sender_name"));
             CreateMeetingRoomAction createMeetingRoomAction = new CreateMeetingRoomAction(message);
             createMeetingRoomAction.doAction();
             return true;

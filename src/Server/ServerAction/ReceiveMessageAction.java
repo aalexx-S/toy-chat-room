@@ -34,10 +34,14 @@ public class ReceiveMessageAction extends ServerAction {
             if (!checkList.contains(receivers.get(1))) {
                 notifyManager.update(receivers.get(0), receivers.get(1));
                 RoomListManager roomListManager = new RoomListManager();
-                message.put("account", receivers.get(1));
-                message.put("room_type", "single");
-                message.put("room_name", roomInfoManager.queryName(message.get("room_id")));
-                roomListManager.update(message);
+
+                Map<String, String> roomMessage = new HashMap<>();
+                roomMessage.put("account", receivers.get(1));
+                roomMessage.put("room_id", message.get("room_id"));
+                roomMessage.put("room_type", "single");
+                roomMessage.put("room_name", roomInfoManager.queryName(message.get("room_id")));
+                roomMessage.put("type", "add");
+                roomListManager.update(roomMessage);
 
                 RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
                 List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(receivers.get(1));
@@ -51,7 +55,6 @@ public class ReceiveMessageAction extends ServerAction {
         }
 
         List<Map<String, String>> messageInfo = new ArrayList<>();
-        message.put("type", "message");
         messageInfo.add(message);
         ServerClientMessage forwardMessage = ServerClientMessageBuilder.create()
                                             .setInstruction(310)

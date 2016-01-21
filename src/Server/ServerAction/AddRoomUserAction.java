@@ -30,8 +30,6 @@ public class AddRoomUserAction extends ServerAction {
                 response = "SUCCEED";
 
                 RoomListManager roomListManager = new RoomListManager();
-                message.put("account", message.get("name"));
-                message.put("room_type", "multiple");
                 message.put("room_name", roomInfoManager.queryName(message.get("room_id")));
                 roomListManager.update(message);
             }

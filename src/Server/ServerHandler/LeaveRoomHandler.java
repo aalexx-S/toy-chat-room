@@ -15,6 +15,9 @@ public class LeaveRoomHandler extends ServerHandler {
     @Override
     public boolean doAction(Map<String, String> message) {
         if (message.get("instruction").equals("LEAVE_ROOM")) {
+            message.put("type", "leave");
+            message.put("name", message.get("sender_name"));
+            message.put("account", message.get("sender_name"));
             LeaveRoomAction leaveRoomAction = new LeaveRoomAction(message);
             leaveRoomAction.doAction();
             return true;

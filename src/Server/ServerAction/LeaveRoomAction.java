@@ -19,11 +19,9 @@ public class LeaveRoomAction extends ServerAction {
 
     @Override
     public void doAction() {
-        message.put("name", message.get("sender_name"));
         RoomInfoManager roomInfoManager = new RoomInfoManager();
         roomInfoManager.update(message);
         RoomListManager roomListManager = new RoomListManager();
-        message.put("account", message.get("sender_name"));
         roomListManager.update(message);
         RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
         List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(message.get("sender_name"));

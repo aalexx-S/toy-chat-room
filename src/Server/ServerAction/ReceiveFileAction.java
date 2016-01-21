@@ -21,6 +21,5 @@ public class ReceiveFileAction extends ServerAction {
         int token = fileManager.add(message);
         //todo
         //construct ack send file message
-        //send message to room with file token and put message in historicalMessage
     }
 }

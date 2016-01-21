@@ -1,7 +1,27 @@
 package Server.ServerHandler;
 
+import Server.DatabaseManager.FileManager;
+import Server.ServerAction.UploadFinishAction;
+
+import java.util.Map;
+
 /**
  * Created by Tony on 2016/1/21.
  */
-public class UploadFinishHandler {
+public class UploadFinishHandler extends ServerHandler {
+    public UploadFinishHandler(ServerHandler nextHandler) {
+        super(nextHandler);
+    }
+
+    @Override
+    public boolean doAction(Map<String, String> message) {
+        if (message.get("instruction").equals("FILE_UPLOAD_FINISH")) {
+            message.put("type", "file");
+            UploadFinishAction uploadFinishAction = new UploadFinishAction(message);
+            uploadFinishAction.doAction();
+            return true;
+        }
+        else
+            return false;
+    }
 }

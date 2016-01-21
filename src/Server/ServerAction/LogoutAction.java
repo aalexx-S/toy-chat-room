@@ -19,9 +19,9 @@ public class LogoutAction extends ServerAction {
 
     @Override
     public void doAction() {
-        OnlineStatusManager.getInstance().logout(message.get("account"));
+        OnlineStatusManager.getInstance().logout(message.get("sender_name"));
         NotifyManager notifyManager = new NotifyManager();
-        List<String> observers = notifyManager.query(message.get("account"));
+        List<String> observers = notifyManager.query(message.get("sender_name"));
         RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
         for (String observer : observers) {
             List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(observer);

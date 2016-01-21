@@ -15,6 +15,7 @@ public class SendMessageHandler extends ServerHandler {
     @Override
     public boolean doAction(Map<String, String> message) {
         if (message.get("instruction").equals("SEND_MESSAGE")) {
+            message.put("type", "message");
             ReceiveMessageAction receiveMessageAction = new ReceiveMessageAction(message);
             receiveMessageAction.doAction();
             return true;

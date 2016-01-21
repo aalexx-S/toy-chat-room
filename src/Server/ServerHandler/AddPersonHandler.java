@@ -15,6 +15,9 @@ public class AddPersonHandler extends ServerHandler {
     @Override
     public boolean doAction(Map<String, String> message) {
         if (message.get("instruction").equals("ADD_PERSON")) {
+            message.put("type", "add");
+            message.put("account", message.get("name"));
+            message.put("room_type", "multiple");
             AddRoomUserAction addRoomUserAction = new AddRoomUserAction(message);
             addRoomUserAction.doAction();
             return true;

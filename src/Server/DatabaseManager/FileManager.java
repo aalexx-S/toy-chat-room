@@ -17,6 +17,8 @@ public class FileManager extends DatabaseManager {
             String sql = "CREATE TABLE IF NOT EXISTS File " +
                 "(Token INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " FileName  STRING," +
+                " RoomID    STRING," +
+                " SenderName    STRING," +
                 " Timestamp STRING)";
             stmt.executeUpdate(sql);
             stmt.close();
@@ -38,10 +40,12 @@ public class FileManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:file.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("INSERT INTO File (FileName,Timestamp)" +
-                        " VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS);
+                stmt = c.prepareStatement("INSERT INTO File (FileName,Timestamp,RoomID,SenderName)" +
+                        " VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, entry.get("content"));
                 stmt.setString(2, entry.get("time_stamp"));
+                stmt.setString(3, entry.get("room_id"));
+                stmt.setString(4, entry.get("sender_name"));
                 stmt.executeUpdate();
 
                 ResultSet rs = stmt.getGeneratedKeys();
@@ -67,7 +71,7 @@ public class FileManager extends DatabaseManager {
         return id;
     }
 
-    public String query(int token) {
+    public String queryFileName(String token) {
         Connection c = null;
         Statement stmt = null;
         String response = new String();
@@ -78,9 +82,69 @@ public class FileManager extends DatabaseManager {
                 c.setAutoCommit(false);
 
                 stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery( "SELECT Content FROM File WHERE Token = " + token + ";");
+                ResultSet rs = stmt.executeQuery( "SELECT FileName FROM File WHERE Token = " + token + ";");
                 if (rs.next()) {
                     response = rs.getString("FileName");
+                }
+                rs.close();
+                stmt.close();
+                c.close();
+                break;
+            }
+            catch (Exception e) {
+                if (checkLock(e.getMessage(), c))
+                    continue;
+                else
+                    break;
+            }
+        }
+        return response;
+    }
+
+    public String queryRoomID(String token) {
+        Connection c = null;
+        Statement stmt = null;
+        String response = new String();
+        while (true) {
+            try {
+                Class.forName("org.sqlite.JDBC");
+                c = DriverManager.getConnection("jdbc:sqlite:file.db");
+                c.setAutoCommit(false);
+
+                stmt = c.createStatement();
+                ResultSet rs = stmt.executeQuery( "SELECT RoomID FROM File WHERE Token = " + token + ";");
+                if (rs.next()) {
+                    response = rs.getString("RoomID");
+                }
+                rs.close();
+                stmt.close();
+                c.close();
+                break;
+            }
+            catch (Exception e) {
+                if (checkLock(e.getMessage(), c))
+                    continue;
+                else
+                    break;
+            }
+        }
+        return response;
+    }
+
+    public String querySenderName(String token) {
+        Connection c = null;
+        Statement stmt = null;
+        String response = new String();
+        while (true) {
+            try {
+                Class.forName("org.sqlite.JDBC");
+                c = DriverManager.getConnection("jdbc:sqlite:file.db");
+                c.setAutoCommit(false);
+
+                stmt = c.createStatement();
+                ResultSet rs = stmt.executeQuery( "SELECT SenderName FROM File WHERE Token = " + token + ";");
+                if (rs.next()) {
+                    response = rs.getString("SenderName");
                 }
                 rs.close();
                 stmt.close();
