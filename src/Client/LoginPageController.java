@@ -93,7 +93,7 @@ public class LoginPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Pattern DOT = Pattern.compile("^[^\\.]*$");
-        Pattern IP = Pattern.compile("^[1-9\\.]*$");
+        Pattern IP = Pattern.compile("^[0-9\\.]*$");
         Pattern PORT = Pattern.compile("^[1-9]*$");
         ChangeListener dotListener = (observable, oldValue, newValue) -> {
             if (!DOT.matcher((String)newValue).matches()) {
