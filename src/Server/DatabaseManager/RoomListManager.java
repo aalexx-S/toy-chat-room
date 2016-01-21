@@ -195,9 +195,11 @@ public class RoomListManager extends DatabaseManager {
                                 name_list.add(names[i]);
                             }
                         }
-                        dirty_ids = id_list.get(0);
-                        dirty_types = type_list.get(0);
-                        dirty_names = name_list.get(0);
+                        if (id_list.size() > 1) {
+                            dirty_ids = id_list.get(0);
+                            dirty_types = type_list.get(0);
+                            dirty_names = name_list.get(0);
+                        }
                         for (int i = 1; i < id_list.size(); i++) {
                             dirty_ids += "." + id_list.get(i);
                             dirty_types += "." + type_list.get(i);
