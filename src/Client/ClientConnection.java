@@ -99,13 +99,12 @@ public class ClientConnection {
         });
         readingThread.start();
         try {
-            Socket serverSocket = new Socket(this.server_ip, this.server_port);
+            Socket serverSocket = new Socket(server_ip, server_port);
             serverConnection = new Connection(serverSocket, readQueue);
             serverConnection.start();
         } catch (Exception e) {
-            e.printStackTrace();
-            readingThread.interrupt();
             Client.getLoginPageController().setMessage("Cannot connect to Server");
+            readingThread.interrupt();
         }
     }
 }
