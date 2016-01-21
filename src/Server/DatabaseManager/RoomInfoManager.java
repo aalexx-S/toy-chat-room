@@ -148,7 +148,7 @@ public class RoomInfoManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:roominfo.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("SELECT RoomName FROM RoomInfo WHERE RoomID = ?;");
+                stmt = c.prepareStatement("SELECT * FROM RoomInfo WHERE RoomID = ?;");
                 stmt.setString(1, room_id);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {

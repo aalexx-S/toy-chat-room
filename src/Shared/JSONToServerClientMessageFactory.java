@@ -1,5 +1,6 @@
 package Shared;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -17,9 +18,10 @@ public class JSONToServerClientMessageFactory {
             builder.setContent(msg.getString("content"));
         if (msg.has("list")) {
             List<Map<String, String>> list = new ArrayList<>();
-            for (Object oobj : msg.getJSONArray("list")) {
+            JSONArray array = msg.getJSONArray("list");
+            for (int i = 0 ; i < array.length() ; ++ i) {
                 Map<String, String> m = new HashMap<>();
-                JSONObject obj = (JSONObject) oobj;
+                JSONObject obj = (JSONObject) array.get(i);
                 Iterator iter = obj.keys();
                 while (iter.hasNext()) {
                     String key = (String) iter.next();

@@ -23,7 +23,9 @@ public class SyncRoomMessageAction extends ServerAction {
         HistoricalMessageManager historicalMessageManager = new HistoricalMessageManager();
         List<Map<String, String>> history = historicalMessageManager.query(message.get("room_id"));
         ServerClientMessage responseMessage = ServerClientMessageBuilder.create()
-                .setInstruction(300).setRoomId(Integer.getInteger(message.get("room_id"))).setList(history).build();
+                .setInstruction(300)
+                .setRoomId(Integer.parseInt(message.get("room_id")))
+                .setList(history).build();
         ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
     }
 }

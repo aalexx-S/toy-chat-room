@@ -65,6 +65,8 @@ public class ServerConnection {
     }
 
 	public void send (Integer sequence, ServerClientMessage message) {
+        if (!sequenceConnectionMapping.containsKey(sequence))
+            return;
         try {
             sequenceConnectionMapping.get(sequence).send(new ServerClientMessageToJSONFactory().create(message));
         } catch (Exception e) {
@@ -73,6 +75,8 @@ public class ServerConnection {
     }
 
     public void send (String name, ServerClientMessage message) {
+        if (!nameSequenceMapping.containsKey(name))
+            return;
         try {
             sequenceConnectionMapping.get(nameSequenceMapping.get(name)).send(new ServerClientMessageToJSONFactory().create(message));
         } catch (Exception e) {

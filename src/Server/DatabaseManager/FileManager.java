@@ -81,7 +81,7 @@ public class FileManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:file.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("SELECT SenderName FROM File WHERE Token = ?;");
+                stmt = c.prepareStatement("SELECT FileName FROM File WHERE Token = ?;");
                 stmt.setString(1, token);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
@@ -112,7 +112,7 @@ public class FileManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:file.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("SELECT SenderName FROM File WHERE Token = ?;");
+                stmt = c.prepareStatement("SELECT RoomID FROM File WHERE Token = ?;");
                 stmt.setString(1, token);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {

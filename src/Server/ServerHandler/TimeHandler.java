@@ -13,7 +13,7 @@ public class TimeHandler extends ServerHandler {
 
     @Override
     public boolean doAction(Map<String, String> message) {
-        message.put("time_stamp", LocalDateTime.now().toString());
+        message.put("time_stamp", Long.toString(System.currentTimeMillis() / 1000));
         return false;
     }
 }

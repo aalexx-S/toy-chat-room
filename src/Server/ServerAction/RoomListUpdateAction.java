@@ -21,9 +21,7 @@ public class RoomListUpdateAction {
         }
         RoomInfoManager roomInfoManager = new RoomInfoManager();
         List<String> friends = roomInfoManager.queryFriends(roomIds, account);
-        System.err.println(friends);
         List<String> status = OnlineStatusManager.getInstance().query(friends);
-        System.err.println(status);
         for (int i = 0; i < status.size(); i++)
             roomList.get(i).put("status", status.get(i));
         return roomList;

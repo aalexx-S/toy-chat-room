@@ -55,7 +55,7 @@ public class RoomList extends VBox implements Initializable {
     public void setRoomList(List<Map<String, String>> roomList) {
         this.roomList = FXCollections.observableArrayList();
         for (Map<String, String> entry : roomList) {
-            RoomListItem item = new RoomListItem(entry.get("id"), entry.get("name"), entry.get("status"));
+            RoomListItem item = new RoomListItem(entry.get("room_id"), entry.get("room_name"), entry.get("status"));
             this.roomList.add(item);
         }
         table.setItems(this.roomList);

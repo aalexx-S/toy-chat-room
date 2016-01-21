@@ -20,15 +20,11 @@ public class Client extends Application {
     private Parent mainRoot;
     private static LoginPageController loginPageController;
     private static MainPageController mainPageController;
-    private static Handler handler;
     public static LoginPageController getLoginPageController () {
         return loginPageController;
     }
     public static MainPageController getMainPageController () {
         return mainPageController;
-    }
-    public static void handleMessage (ServerClientMessage message) {
-        handler.handle(message);
     }
 
     public static void main (String[] args) {
@@ -66,7 +62,7 @@ public class Client extends Application {
         // handlers
         LoginSuccessHandler loginSuccess = new LoginSuccessHandler(null);
         loginSuccess.setClient(this);
-        handler = new AckRequestFileHandler(
+        Handler handler = new AckRequestFileHandler(
                   new AckSendFileHandler(
                   new AddRoomMessageHandler(
                   new CreateChatRoomResponseHandler(
@@ -110,6 +106,7 @@ public class Client extends Application {
         } else {
             stage.getScene().setRoot(mainRoot);
         }
+        stage.setTitle(loginPageController.getAccount());
         stage.sizeToScene();
     }
 }

@@ -91,7 +91,6 @@ public class MainPageController implements Initializable {
             Map<String, String> syncMsg = new HashMap<>();
             syncMsg.put("instruction", "OPEN_ROOM");
             syncMsg.put("room_id", roomId);
-            ClientConnection.getSharedInstance().send(syncMsg);
             // set send behavior
             r.setOnSendConfirm(event -> {
                 String inputText = r.getInputText();
@@ -138,6 +137,7 @@ public class MainPageController implements Initializable {
             // detach on close
             r.setOnCloseHandler(event -> observer.remove(roomId));
             r.show();
+            ClientConnection.getSharedInstance().send(syncMsg);
         }
     }
 
