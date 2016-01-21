@@ -33,6 +33,7 @@ public class LoginSuccessHandler extends Handler {
             Platform.runLater(() -> {
                 Client.getMainPageController().setSingleTableList(sin);
                 Client.getMainPageController().setMultipleTableList(mul);
+                client.loginSuccess();
             });
             return true;
         }
