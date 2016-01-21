@@ -2,6 +2,7 @@ package Client.EventHandler;
 
 import Client.Client;
 import Shared.ServerClientMessage;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,10 @@ public class RoomListUpdateHandler extends Handler {
                 else
                     mul.add(i);
             }
-            Client.getMainPageController().setSingleTableList(sin);
-            Client.getMainPageController().setMultipleTableList(mul);
+            Platform.runLater(() -> {
+                Client.getMainPageController().setSingleTableList(sin);
+                Client.getMainPageController().setMultipleTableList(mul);
+            });
             return true;
         }
         return false;
