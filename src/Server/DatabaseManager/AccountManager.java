@@ -34,7 +34,7 @@ public class AccountManager extends DatabaseManager {
         while (true) {
             try {
                 Class.forName("org.sqlite.JDBC");
-                c = DriverManager.getConnection("jdbc:sqlite:" + entry.get("type") + "account.db");
+                c = DriverManager.getConnection("jdbc:sqlite:account.db");
                 c.setAutoCommit(false);
 
                 stmt = c.prepareStatement("INSERT INTO Account (Account, Password, LastLogoutTime) VALUES(?, ?, -1);");
@@ -61,7 +61,7 @@ public class AccountManager extends DatabaseManager {
         while (true) {
             try {
                 Class.forName("org.sqlite.JDBC");
-                c = DriverManager.getConnection("jdbc:sqlite:teamAccount.db");
+                c = DriverManager.getConnection("jdbc:sqlite:account.db");
                 c.setAutoCommit(false);
 
                 stmt = c.prepareStatement("SELECT Account FROM Account WHERE Account = ?;");
