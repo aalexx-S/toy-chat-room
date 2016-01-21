@@ -55,7 +55,7 @@ public class NotifyManager extends DatabaseManager {
 
     public List<String> query(String account) {
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String> response = new ArrayList<String>();
         while (true) {
             try {
@@ -63,8 +63,9 @@ public class NotifyManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:notify.db");
                 c.setAutoCommit(false);
 
-                stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery( "SELECT Notify FROM Notify;" );
+                stmt = c.prepareStatement("SELECT Notify FROM Notify WHERE Account = ?;");
+                stmt.setString(1, account);
+                ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     String dirty_targets = rs.getString("Notify");
                     String[] targets = dirty_targets.split("\\.");
@@ -102,7 +103,11 @@ public class NotifyManager extends DatabaseManager {
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     dirty_targets = rs.getString("Notify");
-                    dirty_targets += "." + new_notify;
+                    if (dirty_targets == null)
+                        dirty_targets = new_notify;
+                    else
+                        dirty_targets += "." + new_notify;
+                    System.err.println("new: " + dirty_targets);
                 }
                 rs.close();
                 stmt.close();
