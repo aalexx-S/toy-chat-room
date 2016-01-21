@@ -15,6 +15,7 @@ public class AckSendFileHandler extends Handler {
     public boolean doAction (ServerClientMessage msg) {
         if (msg.getInstruction() == 500) { // ack send file
             ClientConnection.getSharedInstance().startSendingFile(msg.getRoomId());
+            return true;
         }
         return false;
     }

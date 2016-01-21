@@ -18,7 +18,8 @@ public class SyncRoomMessageHandler extends Handler {
             Platform.runLater(() -> {
                 Client.getMainPageController().setUpdateMessage(Integer.toString(msg.getRoomId()), msg.getList());
             });
+            return true;
         }
-        return true;
+        return false;
     }
 }
