@@ -28,7 +28,7 @@ public class Server {
         new NotifyManager().createTable();
         new RoomInfoManager().createTable();
         new RoomListManager().createTable();
-        
+
         int port = Integer.parseInt(args[0]);
         portString = args[0];
         // get ip

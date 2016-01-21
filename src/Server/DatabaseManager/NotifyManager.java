@@ -60,7 +60,7 @@ public class NotifyManager extends DatabaseManager {
         while (true) {
             try {
                 Class.forName("org.sqlite.JDBC");
-                c = DriverManager.getConnection("jdbc:sqlite:Notify.db");
+                c = DriverManager.getConnection("jdbc:sqlite:notify.db");
                 c.setAutoCommit(false);
 
                 stmt = c.createStatement();
