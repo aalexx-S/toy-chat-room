@@ -9,11 +9,11 @@ public class ServerClientMessageToJSONFactory {
     public JSONObject create (ServerClientMessage msg) {
         JSONObject ret = new JSONObject();
         try {
-            ret.put("instruction", msg.getInstruction());
+            ret.put("instruction", Integer.toString(msg.getInstruction()));
             if (msg.getContent() != null)
                 ret.put("content", msg.getContent());
             if (msg.getRoomId() != null)
-                ret.put("room_id", msg.getRoomId());
+                ret.put("room_id", Integer.toString(msg.getRoomId()));
             if (msg.getList() != null)
                 ret.put("list", msg.getList());
         } catch (Exception e) {
