@@ -9,6 +9,7 @@ import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +29,21 @@ public class CreateChatRoomAction extends ServerAction {
         if (accountManager.query(message.get("name"))) {
             //check if object has already added subject
             NotifyManager notifyManager = new NotifyManager();
-            if (!notifyManager.query(message.get("sender_name")).contains(message.get("name"))
-                    && !notifyManager.query(message.get("name")).contains(message.get("sender_name"))) {
+            if (notifyManager.query(message.get("name")).contains(message.get("sender_name")))
+                return;
+            else if (notifyManager.query(message.get("sender_name")).contains(message.get("name"))) {
+                RoomListManager roomListManager = new RoomListManager();
+                String existedId =
+                        roomListManager.getMutualRoomID(message.get("name"), message.get("sender_name"));
+                Map<String, String> existedRoom = new HashMap<>();
+                existedRoom.put("account", message.get("sender_name"));
+                existedRoom.put("type", "add");
+                existedRoom.put("room_id", existedId);
+                existedRoom.put("room_type", "single");
+                existedRoom.put("room_name", message.get("name"));
+                roomListManager.update(existedRoom);
+            }
+            else {
                 RoomInfoManager roomInfoManager = new RoomInfoManager();
                 List<String> roomUsers = new ArrayList<>();
                 roomUsers.add(message.get("sender_name"));

@@ -98,7 +98,7 @@ public class RoomInfoManager extends DatabaseManager {
                         dirty_users += "." + target;
                     else {
                         List<String> user_list = new ArrayList<String>();
-                        String[] users = dirty_users.split(".");
+                        String[] users = dirty_users.split("\\.");
                         for (String user : users) {
                             if (!user.equals(target))
                                 user_list.add(user);
@@ -120,6 +120,7 @@ public class RoomInfoManager extends DatabaseManager {
                 stmt.close();
                 c.commit();
                 c.close();
+                break;
             }
             catch (Exception e) {
                 if (checkLock(e.getMessage(), c))

@@ -17,6 +17,8 @@ public class UploadFinishHandler extends ServerHandler {
     public boolean doAction(Map<String, String> message) {
         if (message.get("instruction").equals("FILE_UPLOAD_FINISH")) {
             message.put("type", "file");
+            String[] split_id = message.get("content").split("_");
+            message.put("file_id", split_id[0]);
             UploadFinishAction uploadFinishAction = new UploadFinishAction(message);
             uploadFinishAction.doAction();
             return true;
