@@ -17,7 +17,7 @@ public class FileManager extends DatabaseManager {
             String sql = "CREATE TABLE IF NOT EXISTS File " +
                 "(Token INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " FileName  STRING," +
-                " Timestamp INT)";
+                " Timestamp STRING)";
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();

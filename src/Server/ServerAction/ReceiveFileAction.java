@@ -1,5 +1,8 @@
 package Server.ServerAction;
 
+import Server.DatabaseManager.FileManager;
+
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -13,6 +16,11 @@ public class ReceiveFileAction extends ServerAction {
 
     @Override
     public void doAction() {
+        new File("./uploadedFiles").mkdirs();
+        FileManager fileManager = new FileManager();
+        int token = fileManager.add(message);
         //todo
+        //construct ack send file message
+        //send message to room with file token and put message in historicalMessage
     }
 }

@@ -1,6 +1,8 @@
 package Server.ServerAction;
 
 import Server.DatabaseManager.AccountManager;
+import Server.DatabaseManager.NotifyManager;
+import Server.DatabaseManager.OnlineStatusManager;
 import Server.DatabaseManager.RoomListManager;
 import Shared.ServerClientMessage;
 import Shared.ServerClientMessageBuilder;
@@ -23,11 +25,9 @@ public class LoginAction extends ServerAction {
         AccountManager accountManager = new AccountManager();
         ServerClientMessage responseMessage = null;
         if (accountManager.authenticate(message.get("account"), message.get("password"))) {
-            RoomListManager roomListManager = new RoomListManager();
-            List<Map<String, String>> roomList = roomListManager.query(message.get("account"));
-            //todo
-            //online status init
-            //a static table for online status
+            OnlineStatusManager.getInstance().login(message.get("account"));
+            RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
+            List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(message.get("account"));
             responseMessage = ServerClientMessageBuilder.create()
                     .setInstruction(100)
                     .setList(roomList)
@@ -40,5 +40,19 @@ public class LoginAction extends ServerAction {
                     .build();
         }
         //send back responseMessage
+        //attach account to sequence number
+
+        //notify user's friends
+        NotifyManager notifyManager = new NotifyManager();
+        List<String> observers = notifyManager.query(message.get("account"));
+        RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
+        for (String observer : observers) {
+            List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(observer);
+            ServerClientMessage forwardMessage = ServerClientMessageBuilder.create()
+                    .setInstruction(200)
+                    .setList(roomList)
+                    .build();
+            //ServerConnection.getInstance().send(observer, forwardMessage);
+        }
     }
 }

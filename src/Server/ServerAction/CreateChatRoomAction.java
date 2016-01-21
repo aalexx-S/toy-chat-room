@@ -38,12 +38,14 @@ public class CreateChatRoomAction extends ServerAction {
             roomListManager.update(message);
             NotifyManager notifyManager = new NotifyManager();
             notifyManager.update(message.get("name"), message.get("sender_name"));
-            //todo
-            //responseMessage
+            responseMessage = ServerClientMessageBuilder.create()
+                    .setInstruction(410)
+                    .setContent("Create Chat Room Succeed")
+                    .build();
         }
         else {
             responseMessage = ServerClientMessageBuilder.create()
-                    .setInstruction(110)
+                    .setInstruction(420)
                     .setContent("No Such User")
                     .build();
         }

@@ -17,7 +17,6 @@ public class SendFileHandler extends ServerHandler {
         if (message.get("instruction").equals("SEND_FILE")) {
             ReceiveFileAction receiveFileAction = new ReceiveFileAction(message);
             receiveFileAction.doAction();
-            //todo
             return true;
         }
         else

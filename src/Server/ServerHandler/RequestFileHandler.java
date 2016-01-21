@@ -17,7 +17,6 @@ public class RequestFileHandler extends ServerHandler {
         if (message.get("instruction").equals("REQUEST_FILE")) {
             SendFileAction sendFileAction = new SendFileAction(message);
             sendFileAction.doAction();
-            //// TODO: 2016/1/21
             return true;
         }
         else

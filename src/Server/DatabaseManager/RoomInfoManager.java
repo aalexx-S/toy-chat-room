@@ -201,4 +201,48 @@ public class RoomInfoManager extends DatabaseManager {
         }
         return response;
     }
+
+    public List<String> queryFriends(List<String> room_ids, String account) {
+        List<String> response = new ArrayList<>();
+        Connection c = null;
+        Statement stmt = null;
+        while (true) {
+            try {
+                Class.forName("org.sqlite.JDBC");
+                c = DriverManager.getConnection("jdbc:sqlite:roominfo.db");
+                c.setAutoCommit(false);
+
+                for (int i = 0; i < room_ids.size(); i++) {
+                    stmt = c.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM RoomInfo WHERE RoomID = " + room_ids.get(i) + ";");
+                    if (rs.next()) {
+                        if (rs.getString("RoomName").equals("")) { //room type: single
+                            String dirty_users = rs.getString("Users");
+                            String[] roommates = dirty_users.split(".");
+                            for (String mate : roommates) {
+                                if (!mate.equals(account)) {
+                                    response.add(mate);
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                            response.add("");
+                    }
+                    rs.close();
+                    stmt.close();
+                }
+
+                c.close();
+                break;
+            }
+            catch (Exception e) {
+                if (checkLock(e.getMessage(), c))
+                    continue;
+                else
+                    break;
+            }
+        }
+        return response;
+    }
 }

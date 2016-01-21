@@ -1,5 +1,7 @@
 package Server.ServerHandler;
 
+import Server.ServerAction.LogoutAction;
+
 import java.util.Map;
 
 /**
@@ -12,7 +14,12 @@ public class LogoutHandler extends ServerHandler {
 
     @Override
     public boolean doAction(Map<String, String> message) {
-        //todo
-        return true;
+        if (message.get("instruction").equals("LOGOUT")) {
+            LogoutAction logoutAction = new LogoutAction(message);
+            logoutAction.doAction();
+            return true;
+        }
+        else
+            return false;
     }
 }

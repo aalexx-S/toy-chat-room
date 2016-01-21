@@ -39,6 +39,7 @@ public class AddRoomUserAction extends ServerAction {
 
         ServerClientMessage responseMessage = ServerClientMessageBuilder.create()
                 .setInstruction(400)
+                .setRoomId(Integer.valueOf(message.get("room_id")))
                 .setContent(response)
                 .build();
         List<String> invoker = new ArrayList<>();

@@ -36,6 +36,7 @@ public class RegisterAction extends ServerAction {
             NotifyManager notifyManager = new NotifyManager();
             notifyManager.add(message.get("account"));
             LoginAction loginAction = new LoginAction(message);
+            loginAction.doAction();
         }
     }
 }
