@@ -26,6 +26,6 @@ public class SyncRoomMessageAction extends ServerAction {
         List<String> receiver = new ArrayList<>();
         receiver.add(message.get("sender_name"));
         //// TODO: 2016/1/20
-        //ServerConnection.getInstance().send(receiver, responseMessage);
+        //Server.getInstance().send(receiver, responseMessage);
     }
 }
