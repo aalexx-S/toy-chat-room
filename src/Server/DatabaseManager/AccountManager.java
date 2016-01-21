@@ -64,7 +64,7 @@ public class AccountManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:account.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("SELECT Account FROM Account WHERE Account = ?;");
+                stmt = c.prepareStatement("SELECT * FROM Account WHERE Account = ?;");
                 stmt.setString(1, account);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
@@ -95,7 +95,7 @@ public class AccountManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:account.db");
                 c.setAutoCommit(false);
 
-                stmt = c.prepareStatement("SELECT Account FROM Account WHERE Account = ? AND Password = ?;");
+                stmt = c.prepareStatement("SELECT * FROM Account WHERE Account = ? AND Password = ?;");
                 stmt.setString(1, account);
                 stmt.setString(2, password);
                 ResultSet rs = stmt.executeQuery();
