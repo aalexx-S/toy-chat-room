@@ -75,6 +75,7 @@ public class Client extends Application {
                   new RoomAddPersonResponseHandler(
                   new RoomListUpdateHandler(
                   new SyncRoomMessageHandler(loginSuccess)))))))));
+        ClientConnection.getSharedInstance().setHandler(handler);
         loginPageController.setRegisterOnAction(event -> {
             Map<String, String> msg = new HashMap<String, String>();
             msg.put("instruction", "REGISTER");
