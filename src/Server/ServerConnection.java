@@ -168,10 +168,10 @@ public class ServerConnection {
 				if (! readQueue.isEmpty()) {
 					byte[] obj = readQueue.poll();
 					try {
-						Utility.byteToFile(obj, fileName);
+						File file = Utility.byteToFile(obj, fileName);
                         JSONObject inform = new JSONObject();
                         inform.put("instruction", "FILE_UPLOAD_FINISH");
-                        inform.put("content", fileName);
+                        inform.put("content", file.getName());
                         serverQueue.add(inform);
 					} catch (Exception e) {
 						e.printStackTrace();
