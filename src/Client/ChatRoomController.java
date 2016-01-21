@@ -12,14 +12,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Created by aalexx on 1/10/16.
@@ -44,10 +43,11 @@ import java.util.ResourceBundle;
  *      trigger action handler;
  */
 public class ChatRoomController implements Initializable {
+    @FXML private Text addPersonMessage;
     @FXML private MyConfirmationButton confirm;
     @FXML private MyFileChooser fileChooser;
     @FXML private TextField inputTextField;
-    @FXML private HBox header;
+    @FXML private VBox header;
     @FXML private MyPopupInputButton add;
     @FXML private MyConfirmationButton leave;
     @FXML private TableView<ChatRoomMessage> contentTable;
@@ -58,11 +58,11 @@ public class ChatRoomController implements Initializable {
     private EventHandler<ActionEvent> confirmHandler = param -> {};
     private Callback<String, Void> downloadCallback = param -> null;
 
-    public void setAddPeopleAction (Callback<String, Void> callback) {
+    public void setAddPeopleCallback (Callback<String, Void> callback) {
         add.setOnConfirm(callback);
     }
 
-    public void setLeaveCallback (EventHandler<ActionEvent> handler) {
+    public void setLeaveHandler(EventHandler<ActionEvent> handler) {
         leave.setOkAction(handler);
     }
 
@@ -86,7 +86,7 @@ public class ChatRoomController implements Initializable {
         this.messages = FXCollections.observableArrayList();
         for (Map<String, String> entry : messages) {
             ChatRoomMessage item = new ChatRoomMessage(entry.get("sender_name"), entry.get("type"), entry.get("content"),
-                    entry.get("time"), entry.get("file_id"));
+                    entry.get("time_stamp"), entry.get("file_id"));
             this.messages.add(item);
         }
         contentTable.setItems(this.messages);
@@ -94,9 +94,19 @@ public class ChatRoomController implements Initializable {
 
     public void addMessages (Map<String, String> entry) {
         ChatRoomMessage item = new ChatRoomMessage(entry.get("sender_name"), entry.get("type"), entry.get("content"),
-                entry.get("time"), entry.get("file_id"));
+                entry.get("time_stamp"), entry.get("file_id"));
         this.messages.add(item);
         contentTable.setItems(this.messages);
+    }
+
+    public void setAddPersonMessage (String message) {
+        addPersonMessage.setText(message);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                addPersonMessage.setText("");
+            }
+        }, 5000);
     }
 
     public void onActionCall (String downloadId) {

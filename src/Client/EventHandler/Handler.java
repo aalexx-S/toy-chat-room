@@ -1,5 +1,7 @@
 package Client.EventHandler;
 
+import Shared.ServerClientMessage;
+
 /**
  * Created by aalexx on 1/15/16.
  *
@@ -15,17 +17,17 @@ public class Handler {
         this.next = next;
     }
 
-    public boolean doAction (Object target) {
+    protected boolean doAction (ServerClientMessage target) {
         return true;
     };
 
-    public void handle (Object target) {
+    public void handle (ServerClientMessage target) {
         boolean consumed = doAction(target);
         if (!consumed)
             nextHandler(target);
     };
 
-    public void nextHandler (Object target) {
+    protected void nextHandler (ServerClientMessage target) {
         next.handle(target);
     }
 }

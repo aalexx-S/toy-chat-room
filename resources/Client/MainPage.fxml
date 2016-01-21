@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
 <?import CustomNode.MyPopupInputButton?>
+<?import javafx.scene.text.Text?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="Client.MainPageController"
       spacing="10" >
@@ -16,6 +17,7 @@
                             title="Find Person"
                             headerText="Find your friends!"
                             contentText="Please enter id" />
+        <Text fx:id="queryPersonMessage" fill="firebrick" />
     </HBox>
     <RoomList fx:id="singleTable"/>
     <HBox spacing="20"
@@ -26,6 +28,7 @@
                             title="Build a chat room"
                             headerText="Build your own room!"
                             contentText="Please enter name" />
+        <Text fx:id="buildRoomMessage" fill="firebrick"/>
     </HBox>
     <RoomList fx:id="multipleTable" />
 </VBox>
