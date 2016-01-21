@@ -53,7 +53,7 @@ public class LoginAction extends ServerAction {
                     .setInstruction(200)
                     .setList(roomList)
                     .build();
-            //ServerConnection.getInstance().send(observer, forwardMessage);
+            ServerConnection.getInstance().send(observer, forwardMessage);
         }
     }
 }

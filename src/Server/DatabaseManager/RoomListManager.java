@@ -56,7 +56,7 @@ public class RoomListManager extends DatabaseManager {
 
     public List<Map<String, String>> query(String account) {
         Connection c = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<Map<String, String>> response = new ArrayList<Map<String, String>>();
         while (true) {
             try {
@@ -64,8 +64,9 @@ public class RoomListManager extends DatabaseManager {
                 c = DriverManager.getConnection("jdbc:sqlite:roomlist.db");
                 c.setAutoCommit(false);
 
-                stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM RoomList WHERE Account = " + account + ";");
+                stmt = c.prepareStatement("SELECT * FROM RoomList WHERE Account = ?;");
+                stmt.setString(1, account);
+                ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     String dirty_ids = rs.getString("RoomIDs");
                     String dirty_types = rs.getString("RoomTypes");

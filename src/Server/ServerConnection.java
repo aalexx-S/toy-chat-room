@@ -47,9 +47,11 @@ public class ServerConnection {
     }
 
     public void removeName(String name){
+        if (name == null || !nameSequenceMapping.containsKey(name) || !sequenceNameMapping.containsKey(name)) {
+            return;
+        }
         int number = nameSequenceMapping.get(name);
-		if (name != null && nameSequenceMapping.containsKey(name))
-        	nameSequenceMapping.remove(name);
+        nameSequenceMapping.remove(name);
         sequenceNameMapping.remove(number);
     }
 
