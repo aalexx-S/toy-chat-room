@@ -49,7 +49,7 @@ public class ChatRoom {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatRoom.fxml"));
             Parent root = loader.load();
             stage = new Stage();
-            stage.setTitle(name);
+            stage.setTitle(this.id);
             stage.setScene(new Scene(root, 600, 450));
             controller = loader.getController();
             // hide the add people and leave button at top
@@ -65,10 +65,6 @@ public class ChatRoom {
         });
     }
 
-    public String getRoomId () {
-        return this.id;
-    }
-
     public File getChosenFile () {
         return controller.getChosenFile();
     }
@@ -82,11 +78,15 @@ public class ChatRoom {
     }
 
     public void setAddPeopleCallBack (Callback<String, Void> callBack) {
-        controller.setAddPeopleAction(callBack);
+        controller.setAddPeopleCallback(callBack);
     }
 
-    public void setLeaveCallBack (Callback<String, Void> callBack) {
-        controller.setLeaveCallback(event -> callBack.call(id));
+    public void setLeaveCallBack (EventHandler<ActionEvent> handler) {
+        controller.setLeaveHandler(event -> handler.handle(new ActionEvent()));
+    }
+
+    public void setAddPersonMessage (String message){
+        controller.setAddPersonMessage(message);
     }
 
     public void setOnSendConfirm (EventHandler<ActionEvent> callback) {

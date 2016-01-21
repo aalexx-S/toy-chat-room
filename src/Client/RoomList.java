@@ -48,6 +48,10 @@ public class RoomList extends VBox implements Initializable {
         }
     }
 
+    public void setStatusVisible (boolean value) {
+        status.setVisible(value);
+    }
+
     public void setRoomList(List<Map<String, String>> roomList) {
         this.roomList = FXCollections.observableArrayList();
         for (Map<String, String> entry : roomList) {

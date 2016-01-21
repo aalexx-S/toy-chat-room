@@ -7,22 +7,26 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.text.Text?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="Client.ChatRoomController"
       spacing="10" >
     <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
-    <HBox fx:id="header" spacing="20" alignment="CENTER">
-        <MyPopupInputButton fx:id="add"
-                            text="AddPeople"
-                            title="Add People"
-                            headerText="Add an user"
-                            contentText="Please enter id" />
-        <MyConfirmationButton fx:id="leave"
-                              text="Leave"
-                              title="Confirmation"
-                              headerText="Leaving chat room."
-                              contentText="Confirm to leave." />
-    </HBox>
+    <VBox fx:id="header">
+        <Text fx:id="addPersonMessage" fill="firebrick"/>
+        <HBox spacing="20" alignment="CENTER">
+            <MyPopupInputButton fx:id="add"
+                                text="AddPeople"
+                                title="Add People"
+                                headerText="Add an user"
+                                contentText="Please enter id" />
+            <MyConfirmationButton fx:id="leave"
+                                  text="Leave"
+                                  title="Confirmation"
+                                  headerText="Leaving chat room."
+                                  contentText="Confirm to leave." />
+        </HBox>
+    </VBox>
     <TableView fx:id="contentTable">
         <columns>
             <TableColumn fx:id="time" text="Time" editable="false" sortable="false" />
