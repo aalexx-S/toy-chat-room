@@ -15,17 +15,19 @@ import java.util.concurrent.Executors;
 
 public class ServerConnection {
 	private Thread listenThread;
+    private Queue<JSONObject> serverQueue = new ConcurrentLinkedDeque<>();
 	private Map<Integer, Connection> sequenceConnectionMapping = new ConcurrentHashMap<>();
     private volatile Map<Queue<JSONObject>, Integer> readQueueSequenceMapping = new ConcurrentHashMap<>();
     private volatile Map<String, Integer> nameSequenceMapping = new ConcurrentHashMap<>();
     private volatile Map<Integer,String> sequenceNameMapping = new ConcurrentHashMap<>();
-	private int totalAccept = 0;
+	private int totalAccept = 1;
     private int port;
     private ServerHandler handler;
     private String ip;
     private static ServerConnection sharedInstanced;
 
     private ServerConnection () {
+        readQueueSequenceMapping.put(serverQueue, 0);
     }
 
     public static ServerConnection getSharedInstanced () {
@@ -108,7 +110,7 @@ public class ServerConnection {
 		Thread readThread = new Thread(() -> {
             while (true) {
                 for (Queue<JSONObject> i : readQueueSequenceMapping.keySet()) {
-                    if (i.size() != 0) {
+                    if (! i.isEmpty()) {
 						try {
                             int number = readQueueSequenceMapping.get(i);
                             String name = null;
@@ -167,7 +169,10 @@ public class ServerConnection {
 					byte[] obj = readQueue.poll();
 					try {
 						Utility.byteToFile(obj, fileName);
-                        // todo inform
+                        JSONObject inform = new JSONObject();
+                        inform.put("instruction", "FILE_UPLOAD_FINISH");
+                        inform.put("content", fileName);
+                        serverQueue.add(inform);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
