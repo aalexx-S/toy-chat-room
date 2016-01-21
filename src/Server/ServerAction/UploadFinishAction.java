@@ -36,7 +36,7 @@ public class UploadFinishAction extends ServerAction {
         RoomInfoManager roomInfoManager = new RoomInfoManager();
         List<String> receivers = roomInfoManager.query(fileMessage.get("room_id"));
 
-        if (roomInfoManager.queryName(fileMessage.get("room_id")).equals("")) {
+        /*if (roomInfoManager.queryName(fileMessage.get("room_id")).equals("")) {
             NotifyManager notifyManager = new NotifyManager();
             List<String> checkList = notifyManager.query(receivers.get(0));
             if (!checkList.contains(receivers.get(1))) {
@@ -58,7 +58,7 @@ public class UploadFinishAction extends ServerAction {
                         .build();
                 ServerConnection.getInstance().send(receivers.get(1), forwardMessage);
             }
-        }
+        }*/
 
         List<Map<String, String>> messageInfo = new ArrayList<>();
         messageInfo.add(fileMessage);
