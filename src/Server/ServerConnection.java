@@ -48,7 +48,8 @@ public class ServerConnection {
 
     public void removeName(String name){
         int number = nameSequenceMapping.get(name);
-        nameSequenceMapping.remove(name);
+		if (name != null && nameSequenceMapping.containsKey(name))
+        	nameSequenceMapping.remove(name);
         sequenceNameMapping.remove(number);
     }
 
@@ -191,7 +192,6 @@ public class ServerConnection {
 	 */
 	public Integer startListeningForRequestFile (File obj) {
 		int port = findFreePort();
-		Queue<byte[]> readQueue = new ConcurrentLinkedDeque<>();
 		Thread fileRequest = new Thread(new Runnable() {
 			private int port;
 			public Runnable setParam(int port) {
