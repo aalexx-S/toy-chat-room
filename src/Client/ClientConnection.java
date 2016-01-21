@@ -92,7 +92,10 @@ public class ClientConnection {
         Thread readingThread = new Thread(() -> {
             while (true) {
                 if (! readQueue.isEmpty()) {
-                    ServerClientMessage msg = new JSONToServerClientMessageFactory().create(readQueue.poll());
+                    JSONObject obj = readQueue.poll();
+                    if (obj.getString("instruction").equals("LOGOUT"))
+                        continue;
+                    ServerClientMessage msg = new JSONToServerClientMessageFactory().create(obj);
                     handler.handle(msg);
                 }
             }
