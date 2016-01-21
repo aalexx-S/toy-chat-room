@@ -71,6 +71,25 @@ public class LoginPageController implements Initializable {
         register.setOnAction(handler);
     }
 
+    private boolean _checkInformationValid () {
+        if (account.getText() != null && !account.getText().equals("") &&
+                password.getText() != null && !password.getText().equals("") &&
+                ip.getText() != null && !ip.getText().equals("") &&
+                port.getText() != null && !port.getText().equals(""))
+            return true;
+        return false;
+    }
+
+    private void checkButtonValid () {
+        if (_checkInformationValid()) {
+            login.setDisable(false);
+            register.setDisable(false);
+        } else {
+            login.setDisable(true);
+            register.setDisable(true);
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Pattern DOT = Pattern.compile("^[^\\.]*$");
@@ -80,20 +99,25 @@ public class LoginPageController implements Initializable {
             if (!DOT.matcher((String)newValue).matches()) {
                 ((Property)observable).setValue(oldValue);
             }
+            checkButtonValid();
         };
         ChangeListener ipListener = (observable, oldValue, newValue) -> {
             if (!IP.matcher((String)newValue).matches()) {
                 ((Property)observable).setValue(oldValue);
             }
+            checkButtonValid();
         };
         ChangeListener portListener = (observable, oldValue, newValue) -> {
             if (!PORT.matcher((String)newValue).matches()) {
                 ((Property)observable).setValue(oldValue);
             }
+            checkButtonValid();
         };
         account.textProperty().addListener(dotListener);
         password.textProperty().addListener(dotListener);
         ip.textProperty().addListener(ipListener);
         port.textProperty().addListener(portListener);
+        login.setDisable(true);
+        register.setDisable(true);
     }
 }
