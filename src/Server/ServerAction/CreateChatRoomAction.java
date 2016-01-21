@@ -25,18 +25,19 @@ public class CreateChatRoomAction extends ServerAction {
         AccountManager accountManager = new AccountManager();
         ServerClientMessage responseMessage = null;
         if (accountManager.query(message.get("name"))) {
-            RoomInfoManager roomInfoManager = new RoomInfoManager();
-            List<String> roomUsers = new ArrayList<>();
-            roomUsers.add(message.get("sender_name"));
-            roomUsers.add(message.get("name"));
-            int room_id = roomInfoManager.add(roomUsers, null);
-            message.put("room_id", Integer.toString(room_id));
-            message.put("room_type", "single");
-            message.put("room_name", "");
-            message.put("account", message.get("sender_name"));
-            RoomListManager roomListManager = new RoomListManager();
-            roomListManager.update(message);
+            //check if object has already added subject
             NotifyManager notifyManager = new NotifyManager();
+            if (!notifyManager.query(message.get("sender_name")).contains(message.get("name"))) {
+                RoomInfoManager roomInfoManager = new RoomInfoManager();
+                List<String> roomUsers = new ArrayList<>();
+                roomUsers.add(message.get("sender_name"));
+                roomUsers.add(message.get("name"));
+                int room_id = roomInfoManager.add(roomUsers, null);
+                message.put("room_id", Integer.toString(room_id));
+                RoomListManager roomListManager = new RoomListManager();
+                roomListManager.update(message);
+            }
+
             notifyManager.update(message.get("name"), message.get("sender_name"));
             responseMessage = ServerClientMessageBuilder.create()
                     .setInstruction(410)
