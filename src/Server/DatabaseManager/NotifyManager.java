@@ -107,7 +107,6 @@ public class NotifyManager extends DatabaseManager {
                         dirty_targets = new_notify;
                     else
                         dirty_targets += "." + new_notify;
-                    System.err.println("new: " + dirty_targets);
                 }
                 rs.close();
                 stmt.close();

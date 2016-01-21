@@ -75,7 +75,12 @@ public class CreateChatRoomAction extends ServerAction {
                         .setInstruction(200)
                         .setList(roomList)
                         .build();
+        roomList = roomListUpdateAction.updateUserRoomList(message.get("name"));
         ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
+        responseMessage = ServerClientMessageBuilder.create()
+                        .setInstruction(200)
+                        .setList(roomList)
+                        .build();
         ServerConnection.getInstance().send(message.get("name"), responseMessage);
     }
 }

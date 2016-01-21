@@ -24,6 +24,7 @@ public class AddRoomUserAction extends ServerAction {
     public void doAction() {
         String response = "FAIL";
         AccountManager accountManager = new AccountManager();
+        ServerClientMessage responseMessage = null;
         if (accountManager.query(message.get("name"))) {
             RoomInfoManager roomInfoManager = new RoomInfoManager();
             if (roomInfoManager.check(message.get("room_id"), message.get("name"))) {
@@ -35,14 +36,15 @@ public class AddRoomUserAction extends ServerAction {
                 roomListManager.update(message);
             }
         }
-
-        ServerClientMessage responseMessage = ServerClientMessageBuilder.create()
-                .setInstruction(400)
-                .setRoomId(Integer.valueOf(message.get("room_id")))
-                .setContent(response)
-                .build();
-
-        ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
+        else {
+            responseMessage = ServerClientMessageBuilder.create()
+                    .setInstruction(400)
+                    .setRoomId(Integer.valueOf(message.get("room_id")))
+                    .setContent(response)
+                    .build();
+            ServerConnection.getInstance().send(message.get("sender_name"), responseMessage);
+            return;
+        }
 
         RoomListUpdateAction roomListUpdateAction = new RoomListUpdateAction();
         List<Map<String, String>> roomList = roomListUpdateAction.updateUserRoomList(message.get("name"));
