@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by aalexx on 1/10/16.
  */
 public class Client extends Application {
-    private Stage stage;
+    private static Stage stage;
     private Parent mainRoot;
     private static LoginPageController loginPageController;
     private static MainPageController mainPageController;
@@ -25,6 +25,9 @@ public class Client extends Application {
     }
     public static MainPageController getMainPageController () {
         return mainPageController;
+    }
+    public static Stage getRoot () {
+        return stage;
     }
 
     public static void main (String[] args) {
@@ -70,7 +73,9 @@ public class Client extends Application {
                   new QueryPersonHandler(
                   new RoomAddPersonResponseHandler(
                   new RoomListUpdateHandler(
-                  new SyncRoomMessageHandler(loginSuccess)))))))));
+                  new SyncRoomMessageHandler(
+                  new FileRequestFinishHandler(
+                          loginSuccess))))))))));
         ClientConnection.getSharedInstance().setHandler(handler);
         loginPageController.setRegisterOnAction(event -> {
             Map<String, String> msg = new HashMap<String, String>();

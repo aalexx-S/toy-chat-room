@@ -17,6 +17,7 @@ public class ClientConnection {
     private Queue<File> sendFileQueue = new ConcurrentLinkedDeque<>();
     private static ClientConnection sharedInstance;
     private Handler handler;
+    private Queue<JSONObject> readQueue = new ConcurrentLinkedDeque<>();
 
     public static ClientConnection getSharedInstance () {
         if (sharedInstance == null) {
@@ -65,6 +66,10 @@ public class ClientConnection {
                     if (! fileReadQueue.isEmpty()) {
                         String home = System.getProperty("user.home");
                         Utility.byteToFile(fileReadQueue.poll(), home + "/Downloads/" + fileName);
+                        JSONObject msg = new JSONObject();
+                        msg.put("instruction", "600");
+                        msg.put("content", fileName);
+                        readQueue.add(msg);
                         break;
                     }
                 }
@@ -88,7 +93,6 @@ public class ClientConnection {
     }
 
     public void start () {
-        Queue<JSONObject> readQueue = new ConcurrentLinkedDeque<>();
         Thread readingThread = new Thread(() -> {
             while (true) {
                 if (! readQueue.isEmpty()) {
