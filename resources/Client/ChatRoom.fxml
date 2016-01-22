@@ -31,7 +31,7 @@
         <columns>
             <TableColumn fx:id="time" text="Time" editable="false" sortable="false" />
             <TableColumn fx:id="name" text="Name" editable="false" sortable="false" />
-            <TableColumn fx:id="content" text="Content" editable="false" sortable="false" />
+            <TableColumn fx:id="content" text="Content" editable="false" sortable="false" prefWidth="320"/>
         </columns>
     </TableView>
     <VBox spacing="10">
