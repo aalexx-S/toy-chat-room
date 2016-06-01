@@ -4,6 +4,8 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -12,15 +14,15 @@ public class Connection extends Thread {
     private volatile Queue<JSONObject> writeQueue = new ConcurrentLinkedDeque<>();
     private Thread writeThread;
     private Socket socket;
-    private ObjectInputStream ois;
-    private ObjectOutputStream oos;
+    private InputStream ois;
+    private OutputStream oos;
 
     public Connection(Socket socket, Queue<JSONObject> readQueue) {
         this.readQueue = readQueue;
         this.socket = socket;
         try {
-            oos = new ObjectOutputStream(socket.getOutputStream());
-            ois = new ObjectInputStream(socket.getInputStream());
+            oos = socket.getOutputStream();
+            ois = socket.getInputStream();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,7 +45,12 @@ public class Connection extends Thread {
                     try {
                         JSONObject msg = writeQueue.poll();
                         System.err.println("[send] " + msg);
-                        oos.writeObject(msg.toString());
+                        int size = msg.toString().length();
+                        ByteBuffer bb = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN);
+                        byte[] bytes = bb.putInt(size).array();
+                        oos.write(bytes);
+                        oos.write(msg.toString().getBytes());
+                        oos.flush();
                     } catch (Exception e) {
                         System.err.println("[Log] Client logout.");
                     }
@@ -52,8 +59,27 @@ public class Connection extends Thread {
         });
         writeThread.start();
         try {
+            byte[] bytes = new byte[65536];
+            int size, now, already;
             while (true) {
-                JSONObject msg = new JSONObject((String) ois.readObject());
+                now = ois.read(bytes);
+                size = ByteBuffer.wrap(bytes, 0, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
+                byte[] msgByte = new byte[size];
+                System.arraycopy(bytes, 4, msgByte, 0, now-4);
+                already = 0; now = 0;
+
+                while (already + now < size) {
+                    now += ois.read(bytes, now, 65536 - now);
+                    if (now >= 65535) {
+                        System.arraycopy(bytes, 0, msgByte, already, now);
+                        already += now;
+                        now = 0;
+                    }
+                    System.err.println(already + " " + now + " " + size);
+                }
+                System.arraycopy(bytes, 0, msgByte, already, now);
+
+                JSONObject msg = new JSONObject(new String (msgByte));
                 readQueue.add(msg);
                 System.err.println("[recv] " + msg);
             }
