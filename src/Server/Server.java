@@ -17,8 +17,8 @@ public class Server {
     private static String portString = "";
 
     public static void main (String[] args) {
-        if (args.length != 1) {
-            System.err.println("Usage: java -jar Server.jar [port]");
+        if (args.length < 1 || args.length > 2) {
+            System.err.println("Usage: java -jar Server.jar [port] [ip (optional)]");
             return;
         }
 
@@ -32,25 +32,28 @@ public class Server {
         int port = Integer.parseInt(args[0]);
         portString = args[0];
         // get ip
-        boolean f = false;
-        try {
-            for (Enumeration en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = (NetworkInterface) en.nextElement();
-                for (Enumeration enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = (InetAddress) enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()&&inetAddress instanceof Inet4Address) {
-                        String ipAddress = inetAddress.getHostAddress().toString();
-                        ipString = inetAddress.getHostAddress();
-                        f = true;
-                        break;
+        if (args.length == 2)
+            ipString = args[1];
+        else {
+            boolean f = false;
+            try {
+                for (Enumeration en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                    NetworkInterface intf = (NetworkInterface) en.nextElement();
+                    for (Enumeration enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                        InetAddress inetAddress = (InetAddress) enumIpAddr.nextElement();
+                        if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+                            ipString = inetAddress.getHostAddress();
+                            f = true;
+                            break;
+                        }
                     }
+                    if (f)
+                        break;
                 }
-                if (f)
-                    break;
+            } catch (SocketException ex) {
+                ex.printStackTrace();
+                System.exit(1);
             }
-        } catch (SocketException ex) {
-            ex.printStackTrace();
-            System.exit(1);
         }
         // print basic connection information
         System.out.println("=======================");
