@@ -16,18 +16,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: org.json:json:20090211" level="project" />
     <orderEntry type="module-library">
-      <library name="Gradle: C__Users_Tony_Documents_school_CN_toy_chat_room_lib_sqlite_jdbc_3_8_11_2_jar">
+      <library name="Gradle: sqlite-jdbc-3.8.11.2">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/sqlite-jdbc-3.8.11.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/sqlite-jdbc-3.8.11.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Gradle: org.json:json:20151123" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" name="org.json:json:201511231" level="project" />
   </component>
 </module>
