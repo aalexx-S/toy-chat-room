@@ -3,6 +3,8 @@ import Server.ServerHandler.ServerHandler;
 import Shared.*;
 import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -23,6 +25,9 @@ public class ServerConnection {
 	private int totalAccept = 1;
     private int port;
     private ServerHandler handler;
+	private ServerHandler generalHandler;
+	private ServerHandler authenticateHandler;
+	private ServerSecurity security = new ServerSecurity();
     private String ip;
     private static ServerConnection sharedInstanced;
 
@@ -41,6 +46,10 @@ public class ServerConnection {
         return sharedInstanced;
     }
 
+	public ServerSecurity getSecurity() {
+		return security;
+	}
+
     public void addName(String name, int number){
         nameSequenceMapping.put(name,number);
         sequenceNameMapping.put(number,name);
@@ -55,9 +64,13 @@ public class ServerConnection {
         sequenceNameMapping.remove(number);
     }
 
-    public void setHandler (ServerHandler handler) {
+    private void setHandler (ServerHandler handler) {
         this.handler = handler;
     }
+
+	public void setGeneralHandler (ServerHandler handler) {this.generalHandler = handler;}
+
+	public void setAuthenticateHandler (ServerHandler handler) {this.authenticateHandler = handler;}
 
     public void setIpPort (String ip, int port) {
         this.ip = ip;
@@ -124,7 +137,13 @@ public class ServerConnection {
                             if (sequenceNameMapping.containsKey(number))
                                 name = sequenceNameMapping.get(number);
 							Map<String, String> msg = new JSONToMapFactory().create(i.poll(), name, Integer.toString(number));
-                            handler.handle(msg);
+
+							if (security.tokenValid(number, Integer.valueOf(msg.get("token"))))
+								setHandler(generalHandler);
+							else
+								setHandler(authenticateHandler);
+
+							handler.handle(msg);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -176,6 +195,22 @@ public class ServerConnection {
 					byte[] obj = readQueue.poll();
 					try {
 						File file = Utility.byteToFile(obj, fileName);
+						/*BufferedImage image = ImageIO.read(file);
+						if (image != null) {
+							ImageProcessor imageProcessor = new ImageProcessor();
+							int width = 0;
+							int height = 0;
+							imageProcessor.createResizeCopy(image, width, height);
+							ByteArrayOutputStream baos = new ByteArrayOutputStream();
+							ImageIO.write(image, "png", baos);
+							baos.flush();
+							String encodedImage = new String(baos.toByteArray());
+							baos.close();
+
+							JSONObject inform = new JSONObject();
+							inform.put("instruction", "IMAGE_PREVIEW");
+							inform.put("content", encodedImage);
+						}*/
                         JSONObject inform = new JSONObject();
                         inform.put("instruction", "FILE_UPLOAD_FINISH");
                         inform.put("content", file.getName());

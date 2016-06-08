@@ -63,12 +63,11 @@ public class Server {
         System.out.println("=======================");
 
         LogoutHandler logoutHandler = new LogoutHandler(null);
-        TimeHandler handler = new TimeHandler(
+        TimeHandler generalHandler = new TimeHandler(
                                 new AddPersonHandler(
                                 new CreateChatRoomHandler(
                                 new CreateMeetingRoomHandler(
                                 new LeaveRoomHandler(
-                                new LoginHandler(
                                 new OpenRoomHandler(
                                 new RegisterHandler(
                                 new RequestFileHandler(
@@ -76,12 +75,15 @@ public class Server {
                                 new SendMessageHandler(
                                 new UploadFinishHandler(
                                 logoutHandler
-                                ))))))))))));
-
+                                )))))))))));
         ServerConnection serverConnection = ServerConnection.getInstance();
 
+        LoginHandler loginHandler = new LoginHandler(null);
+        RegisterHandler authenticateHandler = new RegisterHandler(loginHandler);
+
         serverConnection.setIpPort(ipString, port);
-        serverConnection.setHandler(handler);
+        serverConnection.setGeneralHandler(generalHandler);
+        serverConnection.setAuthenticateHandler(authenticateHandler);
 
         serverConnection.start();
     }

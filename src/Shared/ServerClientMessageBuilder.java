@@ -26,6 +26,11 @@ public class ServerClientMessageBuilder {
         return this;
     }
 
+    public ServerClientMessageBuilder setToken (Integer token) {
+        ret.setToken(token);
+        return this;
+    }
+
     public ServerClientMessageBuilder setContent (String content) {
         ret.setContent(content);
         return this;

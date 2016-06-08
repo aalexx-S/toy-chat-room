@@ -1,4 +1,5 @@
 package Shared;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -58,9 +59,13 @@ public class Connection extends Thread {
             }
         }
         catch (Exception e) {
-            System.err.println("[Log] Client logout.");
+            System.err.println("[Log] Client disconnect.");
             JSONObject logoutMsg = new JSONObject();
-            logoutMsg.put("instruction", "LOGOUT");
+            try {
+                logoutMsg.put("instruction", "DISCONNECT");
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
             readQueue.add(logoutMsg);
             interrupt();
         }

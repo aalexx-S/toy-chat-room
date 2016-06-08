@@ -1,5 +1,6 @@
 package Shared;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -20,7 +21,11 @@ public class JSONToMapFactory {
         Iterator iter = message.keys();
         while (iter.hasNext()) {
             String k = (String) iter.next();
-            ret.put(k, message.getString(k));
+            try {
+                ret.put(k, message.getString(k));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         return ret;
     }
