@@ -18,6 +18,7 @@ public class ClientConnection {
     private static ClientConnection sharedInstance;
     private Handler handler;
     private Queue<JSONObject> readQueue = new ConcurrentLinkedDeque<>();
+    private String token = "";
 
     public static ClientConnection getSharedInstance () {
         if (sharedInstance == null) {
@@ -37,6 +38,10 @@ public class ClientConnection {
     public void setIpPort(String ip, int port){
         this.server_ip = ip;
         this.server_port = port;
+    }
+
+    public void setToken (String token) {
+        this.token = token;
     }
 
     public void startSendingFile (int port) {
@@ -85,6 +90,7 @@ public class ClientConnection {
     }
 
     public void send (Map<String, String> message) {
+        message.put("token", token);
         try {
             serverConnection.send(new MapToJSONFactory().create(message));
         } catch (Exception e) {
