@@ -1,7 +1,6 @@
 package Client;
 
 import Client.EventHandler.*;
-import Shared.ServerClientMessage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

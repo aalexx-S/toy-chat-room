@@ -1,5 +1,6 @@
 package Server;
 
+import Client.EventHandler.Handler;
 import Server.DatabaseManager.*;
 import Server.ServerHandler.*;
 
@@ -73,13 +74,15 @@ public class Server {
                                 new RequestFileHandler(
                                 new SendFileHandler(
                                 new SendMessageHandler(
-                                new UploadFinishHandler(
                                 logoutHandler
-                                )))))))))));
+                                ))))))))));
         ServerConnection serverConnection = ServerConnection.getInstance();
 
-        LoginHandler loginHandler = new LoginHandler(null);
-        RegisterHandler authenticateHandler = new RegisterHandler(loginHandler);
+        ServerHandler authenticateHandler = new TimeHandler(
+                                              new RegisterHandler(
+                                              new LoginHandler(
+                                              new UploadFinishHandler(
+                                              new DisconnectHandler(null)))));
 
         serverConnection.setIpPort(ipString, port);
         serverConnection.setGeneralHandler(generalHandler);

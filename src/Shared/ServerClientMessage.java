@@ -9,7 +9,7 @@ import java.util.Map;
 public class ServerClientMessage {
     private Integer instruction;
     private Integer RoomId;
-    private Integer token;
+    private String token;
     private String content;
     private List<Map<String, String>> list;
 
@@ -21,7 +21,7 @@ public class ServerClientMessage {
         return RoomId;
     }
 
-    public Integer getToken() {return token;}
+    public String getToken() {return token;}
 
     public List<Map<String, String>> getList() {
         return list;
@@ -39,7 +39,7 @@ public class ServerClientMessage {
         this.instruction = instruction;
     }
 
-    public void setToken(Integer token) {this.token = token;}
+    public void setToken(String token) {this.token = token;}
 
     public void setList(List<Map<String, String>> list) {
         this.list = list;

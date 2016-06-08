@@ -22,13 +22,14 @@ public class UploadFinishAction extends ServerAction {
     public void doAction() {
         FileManager fileManager = new FileManager();
         Map<String, String> fileMessage = new HashMap<>();
-        System.err.println("token: " + message.get("file_id"));
+        System.err.println("file id: " + message.get("file_id"));
         fileMessage.put("room_id", fileManager.queryRoomID(message.get("file_id")));
         fileMessage.put("sender_name", fileManager.querySenderName(message.get("file_id")));
         fileMessage.put("content", fileManager.queryFileName(message.get("file_id")));
         fileMessage.put("time_stamp", message.get("time_stamp"));
         fileMessage.put("type", message.get("type"));
         fileMessage.put("file_id", message.get("file_id"));
+        fileMessage.put("token", message.get("token"));
         System.err.println(fileMessage);
 
         HistoricalMessageManager historicalMessageManger = new HistoricalMessageManager();

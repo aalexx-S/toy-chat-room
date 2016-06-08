@@ -21,13 +21,13 @@ public class ServerClientMessageBuilder {
         return this;
     }
 
-    public ServerClientMessageBuilder setRoomId (Integer roomId) {
-        ret.setRoomId(roomId);
+    public ServerClientMessageBuilder setToken (String token) {
+        ret.setToken(token);
         return this;
     }
 
-    public ServerClientMessageBuilder setToken (Integer token) {
-        ret.setToken(token);
+    public ServerClientMessageBuilder setRoomId (Integer roomId) {
+        ret.setRoomId(roomId);
         return this;
     }
 

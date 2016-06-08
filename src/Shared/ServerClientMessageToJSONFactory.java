@@ -16,6 +16,8 @@ public class ServerClientMessageToJSONFactory {
                 ret.put("room_id", Integer.toString(msg.getRoomId()));
             if (msg.getList() != null)
                 ret.put("list", msg.getList());
+            if (msg.getToken() != null)
+                ret.put("token", msg.getToken());
         } catch (Exception e) {
         }
         return ret;
