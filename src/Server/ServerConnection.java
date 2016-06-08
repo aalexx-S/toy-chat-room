@@ -138,7 +138,7 @@ public class ServerConnection {
                                 name = sequenceNameMapping.get(number);
 							Map<String, String> msg = new JSONToMapFactory().create(i.poll(), name, Integer.toString(number));
 
-							if (security.tokenValid(number, Integer.valueOf(msg.get("token"))))
+							if (msg.containsKey("token") && security.tokenValid(number, Integer.valueOf(msg.get("token"))))
 								setHandler(generalHandler);
 							else
 								setHandler(authenticateHandler);

@@ -45,7 +45,7 @@ public class LoginAction extends ServerAction {
             responseMessage = ServerClientMessageBuilder.create()
                     .setInstruction(100)
                     .setList(roomList)
-                    .setToken(token)
+                    .setToken(Integer.toString(token))
                     .build();
         }
         else {

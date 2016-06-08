@@ -16,6 +16,8 @@ public class JSONToServerClientMessageFactory {
             builder.setRoomId(Integer.parseInt(msg.getString("room_id")));
         if (msg.has("content"))
             builder.setContent(msg.getString("content"));
+        if (msg.has("token"))
+            builder.setToken(Integer.toString(msg.getInt("token")));
         if (msg.has("list")) {
             List<Map<String, String>> list = new ArrayList<>();
             JSONArray array = msg.getJSONArray("list");

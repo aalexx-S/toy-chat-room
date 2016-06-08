@@ -13,11 +13,11 @@ import java.util.Map;
 public class JSONToMapFactory {
     public Map<String, String> create(JSONObject message, String senderName, String sequence) {
         Map<String, String> ret = new HashMap<>();
-        if (senderName == null) {
+        //if (senderName == null) {
             ret.put("sequence_number", sequence);
-        } else {
+        //} else {
             ret.put("sender_name", senderName);
-        }
+        //}
         Iterator iter = message.keys();
         while (iter.hasNext()) {
             String k = (String) iter.next();

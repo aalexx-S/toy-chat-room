@@ -18,7 +18,7 @@ public class ClientConnection {
     private static ClientConnection sharedInstance;
     private Handler handler;
     private Queue<JSONObject> readQueue = new ConcurrentLinkedDeque<>();
-    private String token = "";
+    private String token = new String("");
 
     public static ClientConnection getSharedInstance () {
         if (sharedInstance == null) {
@@ -90,7 +90,8 @@ public class ClientConnection {
     }
 
     public void send (Map<String, String> message) {
-        message.put("token", token);
+        if (!token.equals(""))
+            message.put("token", token);
         try {
             serverConnection.send(new MapToJSONFactory().create(message));
         } catch (Exception e) {

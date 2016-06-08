@@ -22,7 +22,7 @@ public class LoginSuccessHandler extends Handler {
     @Override
     public boolean doAction (ServerClientMessage msg) {
         if (msg.getInstruction() == 100) { // login success
-            ClientConnection.getSharedInstance().setToken(Integer.toString(msg.getToken()));
+            ClientConnection.getSharedInstance().setToken(msg.getToken());
             List<Map<String, String>> sin = new ArrayList<>();
             List<Map<String, String>> mul = new ArrayList<>();
             for (Map<String, String> i : msg.getList()) {
