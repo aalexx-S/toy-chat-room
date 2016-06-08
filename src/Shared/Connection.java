@@ -44,12 +44,16 @@ public class Connection extends Thread {
                 if (! writeQueue.isEmpty()) {
                     try {
                         JSONObject msg = writeQueue.poll();
-                        System.err.println("[send] " + msg);
-                        int size = msg.toString().length();
+                        if (msg.toString().length() <= 64)
+                            System.err.println("[send] " + msg);
+                        else
+                            System.err.println("[send]" + msg.toString().substring(0, 64) + "...");
+                        byte[] messageBytes = msg.toString().getBytes();
+                        int size = messageBytes.length;
                         ByteBuffer bb = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN);
                         byte[] bytes = bb.putInt(size).array();
                         oos.write(bytes);
-                        oos.write(msg.toString().getBytes());
+                        oos.write(messageBytes);
                         oos.flush();
                     } catch (Exception e) {
                         System.err.println("[Log] Client logout.");
@@ -66,6 +70,8 @@ public class Connection extends Thread {
             while (true) {
                 now = ois.read(bytes);
                 size = ByteBuffer.wrap(bytes, 0, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
+                if (size < 0)
+                    throw new Exception("EOF");
                 byte[] msgByte = new byte[size];
                 System.arraycopy(bytes, 4, msgByte, 0, now-4);
                 already = now - 4; now = 0;
@@ -75,6 +81,7 @@ public class Connection extends Thread {
                     if (currentRead < 0) {
                         throw new Exception("EOF");
                     }
+
                     now += currentRead;
                     if (now > bufferSize - 10) {
                         System.arraycopy(bytes, 0, msgByte, already, now);
@@ -90,6 +97,7 @@ public class Connection extends Thread {
             }
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.err.println("[Log] Client disconnect.");
             JSONObject logoutMsg = new JSONObject();
             try {
