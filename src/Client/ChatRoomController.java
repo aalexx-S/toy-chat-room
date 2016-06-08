@@ -5,18 +5,28 @@ import CustomNode.MyFileChooser;
 import CustomNode.MyPopupInputButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.util.Callback;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -169,12 +179,59 @@ public class ChatRoomController implements Initializable {
             if (!empty) {
                 String type = contentTable.getItems().get(getIndex()).getType();
                 if (type.equals("file")) {
+                    /*
+                        Show file download button.
+                    */
                     HBox tmp = new HBox();
                     tmp.setSpacing(20);
                     tmp.getChildren().addAll(contentText, action);
                     setGraphic(tmp);
+                } else if (type.equals("image")) {
+                    /*
+                        Show the image and add click action.
+                        Download the image as a file on clicked.
+                     */
+                    ImageView tmp = new ImageView();
+                    try {
+                        BufferedImage tmpbufim = ImageIO.read(new ByteArrayInputStream(content.getBytes()));
+                        tmp.setImage(SwingFXUtils.toFXImage(tmpbufim, null));
+                    } catch (IOException ex) {
+                        System.err.print(ex);
+                    }
+                    tmp.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                        int selected = getTableRow().getIndex();
+                        ChatRoomMessage item = contentTable.getItems().get(selected);
+                        onActionCall(item.getId());
+                    });
+                    setGraphic(tmp);
                 } else {
-                    setGraphic(contentText);
+                    /*
+                        Show the text.
+                        If the text contains one or more youtube link, show them.
+                     */
+                    VBox layout = new VBox();
+                    layout.getChildren().add(contentText);
+                    String youtubeStringMatch = "https://www.youtube.com";
+                    if (content.contains(youtubeStringMatch)) {
+                        int tmp = content.indexOf(youtubeStringMatch);
+                        List<String> yturl = new LinkedList<>();
+                        while (tmp != -1) {
+                            int urlend = content.indexOf(" ", tmp + 1);
+                            urlend = urlend == -1 ? content.length() : urlend;
+                            String tmpurl = content.substring(tmp, urlend);
+                            tmpurl = tmpurl.replace("watch?v=", "embed/");
+                            yturl.add(tmpurl);
+                            tmp = content.indexOf(youtubeStringMatch, urlend + 1);
+                        }
+                        for (String t : yturl) {
+                            System.err.println(t);
+                            WebView ytwb = new WebView();
+                            ytwb.getEngine().load(t);
+                            ytwb.setPrefSize(360, 288);
+                            layout.getChildren().add(ytwb);
+                        }
+                    }
+                    setGraphic(layout);
                 }
             } else
                 setGraphic(null);
