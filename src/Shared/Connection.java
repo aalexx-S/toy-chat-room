@@ -58,24 +58,29 @@ public class Connection extends Thread {
             }
         });
         writeThread.start();
+        int bufferSize = 65536;
+        int currentRead;
         try {
-            byte[] bytes = new byte[65536];
+            byte[] bytes = new byte[bufferSize];
             int size, now, already;
             while (true) {
                 now = ois.read(bytes);
                 size = ByteBuffer.wrap(bytes, 0, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
                 byte[] msgByte = new byte[size];
                 System.arraycopy(bytes, 4, msgByte, 0, now-4);
-                already = 0; now = 0;
+                already = now - 4; now = 0;
 
                 while (already + now < size) {
-                    now += ois.read(bytes, now, 65536 - now);
-                    if (now >= 65535) {
+                    currentRead = ois.read(bytes, now, bufferSize - now);
+                    if (currentRead < 0) {
+                        throw new Exception("EOF");
+                    }
+                    now += currentRead;
+                    if (now > bufferSize - 10) {
                         System.arraycopy(bytes, 0, msgByte, already, now);
                         already += now;
                         now = 0;
                     }
-                    System.err.println(already + " " + now + " " + size);
                 }
                 System.arraycopy(bytes, 0, msgByte, already, now);
 
