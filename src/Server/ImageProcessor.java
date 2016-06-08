@@ -1,7 +1,10 @@
 package Server;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Created by Tony on 2016/6/8.
@@ -15,5 +18,23 @@ public class ImageProcessor {
         g.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
         g.dispose();
         return scaledBI;
+    }
+
+    String encodeImage(BufferedImage image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            //TODO determine image file type
+            ImageIO.write(image, "png", baos);
+            baos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String encodedImage = new String(baos.toByteArray());
+        try {
+            baos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return encodedImage;
     }
 }

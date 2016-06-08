@@ -1,6 +1,7 @@
 package Server.ServerHandler;
 
 import Server.DatabaseManager.FileManager;
+import Server.ServerAction.ReceiveMessageAction;
 import Server.ServerAction.UploadFinishAction;
 
 import java.util.Map;
@@ -21,6 +22,12 @@ public class UploadFinishHandler extends ServerHandler {
             message.put("file_id", split_id[0]);
             UploadFinishAction uploadFinishAction = new UploadFinishAction(message);
             uploadFinishAction.doAction();
+            return true;
+        }
+        else if (message.get("instruction").equals("IMAGE_PREVIEW")) {
+            message.put("type", "image");
+            ReceiveMessageAction receiveMessageAction = new ReceiveMessageAction(message);
+            receiveMessageAction.doAction();
             return true;
         }
         else

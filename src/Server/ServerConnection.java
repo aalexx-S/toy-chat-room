@@ -195,22 +195,23 @@ public class ServerConnection {
 					byte[] obj = readQueue.poll();
 					try {
 						File file = Utility.byteToFile(obj, fileName);
-						/*BufferedImage image = ImageIO.read(file);
+						BufferedImage image = ImageIO.read(file);
 						if (image != null) {
 							ImageProcessor imageProcessor = new ImageProcessor();
-							int width = 0;
-							int height = 0;
-							imageProcessor.createResizeCopy(image, width, height);
-							ByteArrayOutputStream baos = new ByteArrayOutputStream();
-							ImageIO.write(image, "png", baos);
-							baos.flush();
-							String encodedImage = new String(baos.toByteArray());
-							baos.close();
-
+							int width = 360;
+							int height = 288;
+							int widthPortion = image.getWidth() / width;
+							int heightPortion = image.getHeight() / height;
+							if (widthPortion > heightPortion)
+								height = image.getHeight() * width / image.getWidth();
+							else
+								width = image.getWidth() * height / image.getHeight();
+							image = imageProcessor.createResizeCopy(image, width, height);
+							String encodedImage = imageProcessor.encodeImage(image);
 							JSONObject inform = new JSONObject();
 							inform.put("instruction", "IMAGE_PREVIEW");
 							inform.put("content", encodedImage);
-						}*/
+						}
                         JSONObject inform = new JSONObject();
                         inform.put("instruction", "FILE_UPLOAD_FINISH");
                         inform.put("content", file.getName());
