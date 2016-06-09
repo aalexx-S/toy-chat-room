@@ -10,12 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -193,17 +190,15 @@ public class ChatRoomController implements Initializable {
                      */
                     ImageView tmp = new ImageView();
                     try {
-                        BufferedImage tmpbufim = ImageIO.read(new ByteArrayInputStream(content.getBytes()));
+                        BufferedImage tmpbufim = ImageIO.read(new ByteArrayInputStream(
+                                Base64.getDecoder().decode(content)));
                         tmp.setImage(SwingFXUtils.toFXImage(tmpbufim, null));
                     } catch (IOException ex) {
                         System.err.print(ex);
                     }
-                    tmp.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                        int selected = getTableRow().getIndex();
-                        ChatRoomMessage item = contentTable.getItems().get(selected);
-                        onActionCall(item.getId());
-                    });
-                    setGraphic(tmp);
+                    action.setGraphic(tmp);
+                    action.setText("");
+                    setGraphic(action);
                 } else {
                     /*
                         Show the text.
@@ -227,7 +222,7 @@ public class ChatRoomController implements Initializable {
                             System.err.println(t);
                             WebView ytwb = new WebView();
                             ytwb.getEngine().load(t);
-                            ytwb.setPrefSize(360, 288);
+                            ytwb.setPrefSize(180, 144);
                             layout.getChildren().add(ytwb);
                         }
                     }

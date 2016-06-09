@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 /**
  * Created by Tony on 2016/6/8.
@@ -29,7 +30,7 @@ public class ImageProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String encodedImage = new String(baos.toByteArray());
+        String encodedImage = Base64.getEncoder().encodeToString(baos.toByteArray());
         try {
             baos.close();
         } catch (IOException e) {

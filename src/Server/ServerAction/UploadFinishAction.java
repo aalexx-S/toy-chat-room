@@ -25,7 +25,11 @@ public class UploadFinishAction extends ServerAction {
         System.err.println("file id: " + message.get("file_id"));
         fileMessage.put("room_id", fileManager.queryRoomID(message.get("file_id")));
         fileMessage.put("sender_name", fileManager.querySenderName(message.get("file_id")));
-        fileMessage.put("content", fileManager.queryFileName(message.get("file_id")));
+        if (message.get("type").equals("file")) {
+            fileMessage.put("content", fileManager.queryFileName(message.get("file_id")));
+        } else if (message.get("type").equals("image")) {
+            fileMessage.put("content", message.get("content"));
+        }
         fileMessage.put("time_stamp", message.get("time_stamp"));
         fileMessage.put("type", message.get("type"));
         fileMessage.put("file_id", message.get("file_id"));

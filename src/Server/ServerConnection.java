@@ -198,8 +198,8 @@ public class ServerConnection {
 						BufferedImage image = ImageIO.read(file);
 						if (image != null) {
 							ImageProcessor imageProcessor = new ImageProcessor();
-							int width = 360;
-							int height = 288;
+							int width = 180;
+							int height = 144;
 							int widthPortion = image.getWidth() / width;
 							int heightPortion = image.getHeight() / height;
 							if (widthPortion > heightPortion)
@@ -211,11 +211,14 @@ public class ServerConnection {
 							JSONObject inform = new JSONObject();
 							inform.put("instruction", "IMAGE_PREVIEW");
 							inform.put("content", encodedImage);
+							inform.put("file_id_tmp", file.getName());
+							serverQueue.add(inform);
+						} else {
+							JSONObject inform = new JSONObject();
+							inform.put("instruction", "FILE_UPLOAD_FINISH");
+							inform.put("content", file.getName());
+							serverQueue.add(inform);
 						}
-                        JSONObject inform = new JSONObject();
-                        inform.put("instruction", "FILE_UPLOAD_FINISH");
-                        inform.put("content", file.getName());
-                        serverQueue.add(inform);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
