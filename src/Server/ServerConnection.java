@@ -207,7 +207,8 @@ public class ServerConnection {
 							else
 								width = image.getWidth() * height / image.getHeight();
 							image = imageProcessor.createResizeCopy(image, width, height);
-							String encodedImage = imageProcessor.encodeImage(image);
+							String type = imageProcessor.getFileType(file);
+							String encodedImage = imageProcessor.encodeImage(image, type);
 							JSONObject inform = new JSONObject();
 							inform.put("instruction", "IMAGE_PREVIEW");
 							inform.put("content", encodedImage);
