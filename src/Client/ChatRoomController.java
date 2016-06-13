@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -210,7 +211,7 @@ public class ChatRoomController implements Initializable {
                     /*
                         Make all URL as hyperlink.
                      */
-                    TextFlow contentTextFlow = new TextFlow();
+                    VBox contentTextBox = new VBox();
                     String[] httpString = {"http://", "https://"};
                     int last = 0;
                     for (int i = 0 ; i < httpString.length ; ++i) {
@@ -219,20 +220,22 @@ public class ChatRoomController implements Initializable {
                              tmp = content.indexOf(httpString[i], tmp + 1)) {
                             int urlend = content.indexOf(" ", tmp + 1);
                             urlend = urlend == -1 ? content.length() : urlend;
-                            contentTextFlow.getChildren().add(
+                            contentTextBox.getChildren().add(
                                     new Text (content.substring(last, tmp)));
                             Hyperlink hyperlink = new Hyperlink(content.substring(tmp, urlend));
                             hyperlink.setOnAction(event-> hyperlinkHandler.call(hyperlink.getText()));
-                            contentTextFlow.getChildren().add(hyperlink);
+                            contentTextBox.getChildren().add(hyperlink);
                             last = urlend;
                         }
                     }
-                    contentTextFlow.getChildren().add(
-                            new Text(content.substring(last, content.length())));
-                    layout.getChildren().add(contentTextFlow);
+                    if (last != content.length()) {
+                        contentTextBox.getChildren().add(
+                                new Text(content.substring(last, content.length())));
+                        layout.getChildren().add(contentTextBox);
+                    }
                     /*
                         Show the text.
-                        If the text contains one or more youtube link, show them.
+                        If the text contains one or more youtube link, show one.
                      */
                     String youtubeStringMatch = "https://www.youtube.com";
                     if (content.contains(youtubeStringMatch)) {
