@@ -44,7 +44,7 @@ public class Connection extends Thread {
                 if (! writeQueue.isEmpty()) {
                     try {
                         JSONObject msg = writeQueue.poll();
-                        if (msg.toString().length() <= 64)
+                        if (msg.toString().length() <= 128)
                             System.err.println("[send] " + msg);
                         else
                             System.err.println("[send]" + msg.toString().substring(0, 64) + "...");
@@ -56,7 +56,7 @@ public class Connection extends Thread {
                         oos.write(messageBytes);
                         oos.flush();
                     } catch (Exception e) {
-                        System.err.println("[Log] Client logout.");
+                        System.err.println("[Log] Disconnected. Write thread terminated.");
                     }
                 }
             }
@@ -70,7 +70,7 @@ public class Connection extends Thread {
             while (true) {
                 now = ois.read(bytes);
                 size = ByteBuffer.wrap(bytes, 0, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
-                if (size < 0)
+                if (now < 0)
                     throw new Exception("EOF");
                 byte[] msgByte = new byte[size];
                 System.arraycopy(bytes, 4, msgByte, 0, now-4);
@@ -97,8 +97,7 @@ public class Connection extends Thread {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("[Log] Client disconnect.");
+            System.err.println("[Log] Disconnected. Read thread terminated.");
             JSONObject logoutMsg = new JSONObject();
             try {
                 logoutMsg.put("instruction", "DISCONNECT");
@@ -106,6 +105,7 @@ public class Connection extends Thread {
                 e1.printStackTrace();
             }
             readQueue.add(logoutMsg);
+            writeThread.interrupt();
             interrupt();
         }
     }
