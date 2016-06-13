@@ -27,7 +27,7 @@
                                   contentText="Confirm to leave." />
         </HBox>
     </VBox>
-    <TableView fx:id="contentTable">
+    <TableView fx:id="contentTable" focusTraversable="false">
         <columns>
             <TableColumn fx:id="time" text="Time" editable="false" sortable="false" />
             <TableColumn fx:id="name" text="Name" editable="false" sortable="false" />
