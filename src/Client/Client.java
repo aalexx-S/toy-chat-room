@@ -49,6 +49,7 @@ public class Client extends Application {
             return;
         }
         mainPageController = mainLoader.getController();
+        mainPageController.setApplication(this);
         /* on close event */
         stage.setOnCloseRequest(event -> {
             GuiCloseEventHandler handle = new GuiCloseEventHandler(stage, event);

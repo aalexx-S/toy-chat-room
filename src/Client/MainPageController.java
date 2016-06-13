@@ -1,6 +1,8 @@
 package Client;
 
 import CustomNode.MyPopupInputButton;
+import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
+import javafx.application.Application;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,7 +24,12 @@ public class MainPageController implements Initializable {
     @FXML private RoomList multipleTable;
     @FXML private MyPopupInputButton find;
     @FXML private MyPopupInputButton build;
+    private Application application;
     private  Map<String, ChatRoom> observer = new HashMap<>(); // room id -> instance
+
+    public void setApplication (Application application) {
+        this.application = application;
+    }
 
     public void setSingleTableList (List<Map<String, String>> roomList) {
         singleTable.setRoomList(roomList);
@@ -110,6 +117,10 @@ public class MainPageController implements Initializable {
                     ClientConnection.getSharedInstance().addQueueingSendFile(chosenFile);
                     ClientConnection.getSharedInstance().send(sendFileMsg);
                 }
+            });
+            r.setHyperlinkCallback(event -> {
+                HostServicesFactory.getInstance(application).showDocument(event);
+                return null;
             });
             r.setOnDownload(fileId -> {
                 Map<String, String> requestFileMsg = new HashMap<String, String>();

@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.scene.web.WebView;
 import javafx.util.Callback;
 
@@ -32,7 +33,7 @@ import java.util.*;
  *
  * setMessage(List<Map<String, String>>);
  *  "sender_name", [name]
- *  "type", ["file", other]
+ *  "type", ["file", "image", other]
  *  "content", [content]   // this will be shown before the download button if type is "file"
  *  "time", [time]         // in second
  *  "file_id", [file id]        // can be empty if type is not file
@@ -63,6 +64,7 @@ public class ChatRoomController implements Initializable {
     @FXML private TableColumn content;
     private ObservableList<ChatRoomMessage> messages = FXCollections.observableArrayList();
     private EventHandler<ActionEvent> confirmHandler = param -> {};
+    private Callback<String, Void> hyperlinkHandler = event -> null;
     private Callback<String, Void> downloadCallback = param -> null;
 
     public void setAddPeopleCallback (Callback<String, Void> callback) {
@@ -71,6 +73,10 @@ public class ChatRoomController implements Initializable {
 
     public void setLeaveHandler(EventHandler<ActionEvent> handler) {
         leave.setOkAction(handler);
+    }
+
+    public void setHyperlinkCallback(Callback<String, Void> handler) {
+        hyperlinkHandler = handler;
     }
 
     public String getInputText () {
@@ -200,31 +206,45 @@ public class ChatRoomController implements Initializable {
                     action.setText("");
                     setGraphic(action);
                 } else {
+                    VBox layout = new VBox();
+                    /*
+                        Make all URL as hyperlink.
+                     */
+                    TextFlow contentTextFlow = new TextFlow();
+                    String[] httpString = {"http://", "https://"};
+                    int last = 0;
+                    for (int i = 0 ; i < httpString.length ; ++i) {
+                        for (int tmp = content.indexOf(httpString[i]) ;
+                             tmp != -1;
+                             tmp = content.indexOf(httpString[i], tmp + 1)) {
+                            int urlend = content.indexOf(" ", tmp + 1);
+                            urlend = urlend == -1 ? content.length() : urlend;
+                            contentTextFlow.getChildren().add(
+                                    new Text (content.substring(last, tmp)));
+                            Hyperlink hyperlink = new Hyperlink(content.substring(tmp, urlend));
+                            hyperlink.setOnAction(event-> hyperlinkHandler.call(hyperlink.getText()));
+                            contentTextFlow.getChildren().add(hyperlink);
+                            last = urlend;
+                        }
+                    }
+                    contentTextFlow.getChildren().add(
+                            new Text(content.substring(last, content.length())));
+                    layout.getChildren().add(contentTextFlow);
                     /*
                         Show the text.
                         If the text contains one or more youtube link, show them.
                      */
-                    VBox layout = new VBox();
-                    layout.getChildren().add(contentText);
                     String youtubeStringMatch = "https://www.youtube.com";
                     if (content.contains(youtubeStringMatch)) {
                         int tmp = content.indexOf(youtubeStringMatch);
-                        List<String> yturl = new LinkedList<>();
-                        while (tmp != -1) {
-                            int urlend = content.indexOf(" ", tmp + 1);
-                            urlend = urlend == -1 ? content.length() : urlend;
-                            String tmpurl = content.substring(tmp, urlend);
-                            tmpurl = tmpurl.replace("watch?v=", "embed/");
-                            yturl.add(tmpurl);
-                            tmp = content.indexOf(youtubeStringMatch, urlend + 1);
-                        }
-                        for (String t : yturl) {
-                            System.err.println(t);
-                            WebView ytwb = new WebView();
-                            ytwb.getEngine().load(t);
-                            ytwb.setPrefSize(180, 144);
-                            layout.getChildren().add(ytwb);
-                        }
+                        int urlend = content.indexOf(" ", tmp + 1);
+                        urlend = urlend == -1 ? content.length() : urlend;
+                        String tmpurl = content.substring(tmp, urlend);
+                        tmpurl = tmpurl.replace("watch?v=", "embed/");
+                        WebView ytwb = new WebView();
+                        ytwb.getEngine().load(tmpurl);
+                        ytwb.setPrefSize(180, 144);
+                        layout.getChildren().add(ytwb);
                     }
                     setGraphic(layout);
                 }

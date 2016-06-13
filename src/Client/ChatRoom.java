@@ -96,6 +96,10 @@ public class ChatRoom {
         controller.setOnSendConfirm(callback);
     }
 
+    public void setHyperlinkCallback(Callback<String, Void> handler) {
+        controller.setHyperlinkCallback(handler);
+    }
+
     public void setOnDownload (Callback<String, Void> callback) {
         controller.setOnDownload(callback);
     }
